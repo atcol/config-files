@@ -13,8 +13,8 @@ if has('windows')
 else
     call plug#begin('~/.vim/plugged')
 endif
-" Plug 'sheerun/vim-wombat-scheme'    "Colorscheme
-" Plug 'tomasr/molokai'               "Colorscheme
+Plug 'sheerun/vim-wombat-scheme'    "Colorscheme
+Plug 'tomasr/molokai'               "Colorscheme
 " Plug 'Shougo/vimfiler.vim'          "Tree file browser
 " Plug 'Shougo/unite.vim'             "Search
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
@@ -65,6 +65,9 @@ Plug 'pearofducks/ansible-vim'
 " Markdown
 Plug 'plasticboy/vim-markdown'
 
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 call plug#end()
 let $GIT_SSL_NO_VERIFY = 'true'
 
@@ -79,6 +82,11 @@ nnoremap <C-J> :bprev<CR>
 
 command! Bd bp | sp | bn | bd
 nnoremap <C-W> :Bd<CR>
+
+"Snippets configuration
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "Don't autoload sessions, but autosave on exit and periodically
 let g:session_autosave='yes'
@@ -257,4 +265,3 @@ endfunction
 "--exclude-standard', 'find %s -type f']
 ""Search from current directory instead of project root
 let g:ctrlp_working_path_mode = 0
-
