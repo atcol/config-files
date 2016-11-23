@@ -33,11 +33,11 @@ Plug 'airblade/vim-gitgutter'       "Git changes column
 " Plug 'Shougo/context_filetype.vim'
 " Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 " Autocompletion
-" if has('nvim')
-    " Plug 'Shougo/deoplete.nvim'       "Autocompletion for neovim
-" else 
-    " Plug 'Shougo/neocomplete.vim'       "Autocompletion - Needs lua
-" endif
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim'       "Autocompletion for neovim
+else 
+    Plug 'Shougo/neocomplete.vim'       "Autocompletion - Needs lua
+endif
 " Nix
 Plug 'LnL7/vim-nix'
 " Javascript
