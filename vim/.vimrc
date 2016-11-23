@@ -13,8 +13,8 @@ if has('windows')
 else
     call plug#begin('~/.vim/plugged')
 endif
-Plug 'sheerun/vim-wombat-scheme'    "Colorscheme
-Plug 'tomasr/molokai'               "Colorscheme
+" Plug 'sheerun/vim-wombat-scheme'    "Colorscheme
+" Plug 'tomasr/molokai'               "Colorscheme
 " Plug 'Shougo/vimfiler.vim'          "Tree file browser
 " Plug 'Shougo/unite.vim'             "Search
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
