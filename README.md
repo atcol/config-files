@@ -1,3 +1,3 @@
-# .files
+# config-files
 
-Various configuration files.
+Various configuration files for tools & platforms I use.
