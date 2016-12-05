@@ -31,13 +31,13 @@ Plug 'majutsushi/tagbar'
 Plug 'kien/ctrlp.vim'               "File/buffer search
 Plug 'airblade/vim-gitgutter'       "Git changes column
 " Plug 'Shougo/context_filetype.vim'
-" Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
+Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
+
 " Autocompletion
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim'       "Autocompletion for neovim
-else 
-    Plug 'Shougo/neocomplete.vim'       "Autocompletion - Needs lua
-endif
+Plug 'Shougo/neocomplete'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'ternjs/tern_for_vim'
+
 " Nix
 Plug 'LnL7/vim-nix'
 " Javascript
@@ -85,8 +85,8 @@ nnoremap <C-W> :Bd<CR>
 
 "Snippets configuration
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 
 "Don't autoload sessions, but autosave on exit and periodically
 let g:session_autosave='yes'
@@ -99,6 +99,8 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 "Neocomplete
 let g:neocomplete#enable_auto_close_preview = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
 "Neocomplete java
 let g:EclimCompletionMethod = 'omnifunc'
 let g:neocomplete#enable_at_startup = 1
@@ -112,7 +114,7 @@ let g:neocomplete#force_omni_input_patterns.java = '\%(\h\w*\|)\)\.\w*'
 let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 "ignore same files git ignores in CtrlP
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|ico|git|svn))$'
 
 " Vimfiler don't jump to first child
 let g:vimfiler_expand_jump_to_first_child = 0
@@ -240,6 +242,7 @@ let g:tagbar_type_haskell = {
 "Javascript
 "autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 noexpandtab
 let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_eslint_args = ['-c ~/src/c4isrviz/javascript/LibJavaScriptCore/package.json']
 
 "Organise AMD-style javascript imports
 function! AmdImports()
@@ -265,3 +268,6 @@ endfunction
 "--exclude-standard', 'find %s -type f']
 ""Search from current directory instead of project root
 let g:ctrlp_working_path_mode = 0
+
+" Neocomplete config
+let g:neocomplete#enable_at_startup = 1
