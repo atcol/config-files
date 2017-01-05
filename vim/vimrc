@@ -67,6 +67,7 @@ Plug 'plasticboy/vim-markdown'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'ervandew/supertab'
 
 call plug#end()
 let $GIT_SSL_NO_VERIFY = 'true'
