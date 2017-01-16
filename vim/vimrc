@@ -82,7 +82,7 @@ nnoremap <C-K> :bnext<CR>
 nnoremap <C-J> :bprev<CR>
 
 command! Bd bp | sp | bn | bd
-nnoremap <C-W> :Bd<CR>
+nnoremap <C-C> :Bd<CR>
 
 "Snippets configuration
 let g:UltiSnipsExpandTrigger="<tab>"
