@@ -272,3 +272,5 @@ let g:ctrlp_working_path_mode = 0
 
 " Neocomplete config
 let g:neocomplete#enable_at_startup = 1
+
+:nnoremap <F8> :setl noai nocin nosi inde=<CR>
