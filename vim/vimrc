@@ -13,8 +13,7 @@ if has('windows')
 else
     call plug#begin('~/.vim/plugged')
 endif
-Plug 'sheerun/vim-wombat-scheme'    "Colorscheme
-Plug 'tomasr/molokai'               "Colorscheme
+
 " Plug 'Shougo/vimfiler.vim'          "Tree file browser
 " Plug 'Shougo/unite.vim'             "Search
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
@@ -36,17 +35,21 @@ Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 " Autocompletion
 Plug 'Shougo/neocomplete'
 " Plug 'Valloric/YouCompleteMe'
-Plug 'ternjs/tern_for_vim'
+" Plug 'ternjs/tern_for_vim'
 
 " Nix
 Plug 'LnL7/vim-nix'
+
 " Javascript
 " Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'pangloss/vim-javascript'
 Plug 'maksimr/vim-jsbeautify'
+Plug 'heavenshell/vim-jsdoc'
 "Plug 'othree/jspc.vim'
+
 " Lisp
 Plug 'slimv.vim'
+
 " HTML and HTML templating
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'pbrisbin/html-template-syntax'
@@ -246,7 +249,14 @@ let g:tagbar_type_haskell = {
 "Javascript
 "autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 noexpandtab
 let g:syntastic_javascript_checkers = ['eslint']
-" let g:syntastic_javascript_eslint_args = ['-c ~/src/c4isrviz/javascript/LibJavaScriptCore/package.json']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 "Organise AMD-style javascript imports
 function! AmdImports()
