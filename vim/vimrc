@@ -52,10 +52,13 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'pbrisbin/html-template-syntax'
 Plug 'digitaltoad/vim-jade'
 Plug 'mustache/vim-mustache-handlebars'
+
 " Haskell
 Plug 'raichoo/haskell-vim'
 Plug 'eagletmt/ghcmod-vim'
 Plug 'eagletmt/neco-ghc'
+Plug 'nbouscal/vim-stylish-haskell'
+
 " Scala
 Plug 'derekwyatt/vim-scala'
 " Rust
