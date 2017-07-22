@@ -62,6 +62,9 @@ Plug 'eagletmt/ghcmod-vim'
 Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
 
+" C/C++
+Plug 'https://github.com/WolfgangMehner/c-support'
+
 " Scala
 Plug 'derekwyatt/vim-scala'
 " Rust
