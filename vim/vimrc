@@ -210,6 +210,9 @@ autocmd BufRead *.vala,*.vapi set efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m
 au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
 
 "Haskell
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:haskellmode_completion_ghc = 0
+let g:necoghc_use_stack = 1
 let g:necoghc_enable_detailed_browse = 1 "Show types in completion suggestions
 nmap <silent> <leader>ht :GhcModType<CR>
 nmap <silent> <leader>hT :GhcModTypeInsert<CR>
