@@ -24,7 +24,7 @@ Plug 'tpope/vim-fugitive'           "Git
 " Plug 'tpope/vim-repeat'
 " Plug 'tpope/vim-surround'           "Surround things with characters
 " Plug 'terryma/vim-multiple-cursors'
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
 " Plug 'jpalardy/vim-slime'
 Plug 'kien/ctrlp.vim'               "File/buffer search
@@ -46,6 +46,10 @@ Plug 'pangloss/vim-javascript'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'heavenshell/vim-jsdoc'
 "Plug 'othree/jspc.vim'
+
+" Typescript
+"
+Plug 'leafgarland/typescript-vim'
 
 " Lisp
 Plug 'slimv.vim'
@@ -144,7 +148,6 @@ map <F3> :VimFilerCurrentDir -explorer -auto-expand<CR>
 set clipboard=unnamed
 set number
 syntax on
-set omnifunc=syntaxcomplete#Complete
 set wildmode=longest:list
 set wildmenu
 set history=1000
@@ -261,7 +264,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "Organise AMD-style javascript imports
