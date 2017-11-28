@@ -50,9 +50,7 @@ Plug 'heavenshell/vim-jsdoc'
 " Typescript
 "
 Plug 'leafgarland/typescript-vim'
-
-" Lisp
-Plug 'slimv.vim'
+Plug 'palantir/tslint'
 
 " HTML and HTML templating
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -294,5 +292,16 @@ let g:ctrlp_working_path_mode = 0
 
 " Neocomplete config
 let g:neocomplete#enable_at_startup = 1
+
+" Put this in vimrc or a plugin file of your own.
+" After this is configured, :ALEFix will try and fix your JS code with ESLint.
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'typescript': ['tslint'],
+\}
+
+" Set this setting in vimrc if you want to fix files automatically on save.
+" This is off by default.
+let g:ale_fix_on_save = 1
 
 :nnoremap <F8> :setl noai nocin nosi inde=<CR>
