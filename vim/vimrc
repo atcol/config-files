@@ -14,28 +14,21 @@ else
     call plug#begin('~/.vim/plugged')
 endif
 
-" Plug 'Shougo/vimfiler.vim'          "Tree file browser
-" Plug 'Shougo/unite.vim'             "Search
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
 Plug 'xolox/vim-session'            "Save and load sessions
 Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-shell'
 Plug 'tpope/vim-fugitive'           "Git
-" Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-surround'           "Surround things with characters
-" Plug 'terryma/vim-multiple-cursors'
+
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
-" Plug 'jpalardy/vim-slime'
+
 Plug 'kien/ctrlp.vim'               "File/buffer search
 Plug 'airblade/vim-gitgutter'       "Git changes column
-" Plug 'Shougo/context_filetype.vim'
+
 Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 
 " Autocompletion
 Plug 'Shougo/neocomplete'
-" Plug 'Valloric/YouCompleteMe'
-" Plug 'ternjs/tern_for_vim'
 
 " Nix
 Plug 'LnL7/vim-nix'
@@ -51,6 +44,7 @@ Plug 'heavenshell/vim-jsdoc'
 "
 Plug 'leafgarland/typescript-vim'
 Plug 'palantir/tslint'
+Plug 'Quramy/tsuquyomi'
 
 " HTML and HTML templating
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
