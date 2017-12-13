@@ -29,6 +29,7 @@ Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 
 " Autocompletion
 Plug 'Shougo/neocomplete'
+Plug 'vim-syntastic/syntastic'
 
 " Nix
 Plug 'LnL7/vim-nix'
@@ -116,6 +117,7 @@ if !exists('g:neocomplete#force_omni_input_patterns')
   let g:neocomplete#force_omni_input_patterns = {}
 endif
 let g:neocomplete#force_omni_input_patterns.java = '\%(\h\w*\|)\)\.\w*'
+
 "Neocomplete javascript
 let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
@@ -277,6 +279,9 @@ let g:ctrlp_working_path_mode = 0
 
 " Neocomplete config
 let g:neocomplete#enable_at_startup = 1
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
 let g:ale_linters = {
 \    'typescript': ['tslint', 'tsserver'],
