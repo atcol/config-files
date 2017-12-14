@@ -74,6 +74,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 
+" Colourschemes / Themes
+Plugin 'NLKNguyen/papercolor-theme'
+
 call plug#end()
 let $GIT_SSL_NO_VERIFY = 'true'
 
@@ -163,11 +166,12 @@ set t_Co=256
 set fileformat=unix
 set fileformats=unix,dos
 let g:neocomplete#enable_at_startup = 1
-if has('gui_running')
-    colorscheme desert
-else
-    colorscheme desert
-endif
+
+" Colourscheme Setup
+set t_Co=256   " This is may or may not needed.
+set background=light
+colorscheme PaperColor
+
 if has('gui_running')
     if has('gui_win32')
         set guifont=ProFontWindows
