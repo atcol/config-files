@@ -75,7 +75,7 @@ Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 
 " Colourschemes / Themes
-Plugin 'NLKNguyen/papercolor-theme'
+Plug 'NLKNguyen/papercolor-theme'
 
 call plug#end()
 let $GIT_SSL_NO_VERIFY = 'true'
