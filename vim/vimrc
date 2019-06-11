@@ -27,9 +27,6 @@ Plug 'airblade/vim-gitgutter'       "Git changes column
 
 Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 
-" Autocompletion
-Plug 'Shougo/neocomplete'
-
 " Nix
 Plug 'LnL7/vim-nix'
 
@@ -61,18 +58,10 @@ Plug 'nbouscal/vim-stylish-haskell'
 " C/C++
 Plug 'https://github.com/WolfgangMehner/c-support'
 
-" Scala
-Plug 'derekwyatt/vim-scala'
-" Rust
-Plug 'rust-lang/rust.vim'
 " Ansible
 Plug 'pearofducks/ansible-vim'
 " Markdown
 Plug 'plasticboy/vim-markdown'
-
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'ervandew/supertab'
 
 call plug#end()
 let $GIT_SSL_NO_VERIFY = 'true'
@@ -89,11 +78,6 @@ nnoremap <C-J> :bprev<CR>
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
 
-"Snippets configuration
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-
 "Don't autoload sessions, but autosave on exit and periodically
 let g:session_autosave='yes'
 let g:session_autosave_periodic=2
@@ -106,19 +90,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 "Neocomplete
 let g:neocomplete#enable_auto_close_preview = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-"Neocomplete java
-let g:EclimCompletionMethod = 'omnifunc'
-let g:neocomplete#enable_at_startup = 1
-let g:deoplete#enable_at_startup = 1
-
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.java = '\%(\h\w*\|)\)\.\w*'
-
-"Neocomplete javascript
-let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 "ignore same files git ignores in CtrlP
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|ico|git|svn))$'
@@ -197,13 +168,6 @@ endfor
 let &colorcolumn=join(range(81,999),",")
 highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
-"Fortran
-let fortran_free_source=1
-
-"Vala
-autocmd BufRead *.vala,*.vapi set efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m
-au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
-
 "Haskell
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 let g:haskellmode_completion_ghc = 0
@@ -274,9 +238,6 @@ endfunction
 "--exclude-standard', 'find %s -type f']
 ""Search from current directory instead of project root
 let g:ctrlp_working_path_mode = 0
-
-" Neocomplete config
-let g:neocomplete#enable_at_startup = 1
 
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
