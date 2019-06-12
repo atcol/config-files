@@ -214,25 +214,6 @@ let g:tagbar_type_haskell = {
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-"Organise AMD-style javascript imports
-function! AmdImports()
-    execute "normal! gg0:%s/'\\_s*\]/'\\r\]\<cr>"
-    execute "normal! gg0:%s/define\\s*\(\\s*\\\[\\_s*'/define(\[\\r    '\<cr>"
-    execute "normal! \<s-v>/\]\<cr>k"
-    execute "normal! :s/'\\_s*,\\_s*'/',\\r    '/g\<cr>"
-    execute "normal! /\]\<cr>kA,\<esc>"
-    execute "normal! gg0/define\\s*\(\\s*\\\[\\_s*'\<cr>j"
-    execute "normal! \<s-v>/\]\<cr>k:sort\<cr>"
-    execute "normal! /\]\<cr>kA\<backspace>\<esc>"
-    execute "normal! gg0:%s/\]\\_s*,\\_s*function\\_s*\(\\\(\[^)\]\\|\\_s\\\)*\)/\], function\(\\r\)/\<cr>"
-    execute "normal! gg0/define\\s*\(\\s*\\\[\\_s*'\<cr>j"
-    execute "normal! \<s-v>/\]\<cr>k"
-    execute "normal! y/\], function\(\<cr>p"
-    execute "normal! \<s-v>/\)\<cr>k:s/'\[a-zA-Z.\\\/_\]*\\\/\\\(\[a-zA-Z_\]*\\\)'/\\1/g\<cr>"
-    execute "normal! gg0/\], function\(\<cr>"
-    execute "normal! \<s-v>/\)\<cr>k:s/'\[a-zA-Z.\\\/!_\]*\\\/\\\(\[a-zA-Z_\]*\\\).\\\([a-zA-Z\]*\\\)'/\\1\\U\\2/g\<cr>"
-endfunction
-
 "ignore same files git ignores in CtrlP
 "let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co
 "--exclude-standard', 'find %s -type f']
@@ -245,6 +226,8 @@ let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' ch
 let g:ale_linters = {
 \    'typescript': ['tslint', 'tsserver'],
 \}
+
+let g:ale_echo_cursor = 0
 
 " Set this setting in vimrc if you want to fix files automatically on save.
 " This is off by default.
