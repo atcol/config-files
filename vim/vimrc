@@ -127,8 +127,9 @@ set shiftwidth=2
 set autoindent
 set smartindent
 set smarttab
-set textwidth=130
-set colorcolumn=130
+set textwidth=0
+set wrapmargin=0
+set colorcolumn=180
 set ruler
 set confirm
 set mouse+=a
@@ -141,7 +142,7 @@ set fileformat=unix
 set fileformats=unix,dos
 let g:neocomplete#enable_at_startup = 1
 
-colorscheme evening
+colorscheme torte
 
 if has('gui_running')
     if has('gui_win32')
