@@ -27,12 +27,12 @@ Plug 'airblade/vim-gitgutter'       "Git changes column
 
 Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
 
-" Dhall
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
+" Dhall
 Plug 'vmchale/dhall-vim'
 
 " Nix
@@ -63,8 +63,15 @@ Plug 'eagletmt/ghcmod-vim'
 Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
 
+" C/C++
+Plug 'https://github.com/WolfgangMehner/c-support'
+
+" Rust
+Plug 'rust-lang/rust.vim'
+
 " Ansible
 Plug 'pearofducks/ansible-vim'
+
 " Markdown
 Plug 'plasticboy/vim-markdown'
 
@@ -91,10 +98,6 @@ let g:session_autoload='no'
 "Use filename rather than full path in airline buffer list
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-"Neocomplete
-let g:neocomplete#enable_auto_close_preview = 1
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 "ignore same files git ignores in CtrlP
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|ico|git|svn))$'
@@ -140,7 +143,6 @@ set nostartofline
 set t_Co=256
 set fileformat=unix
 set fileformats=unix,dos
-let g:neocomplete#enable_at_startup = 1
 
 colorscheme torte
 
@@ -170,8 +172,8 @@ endfor
 
 "nnoremap <esc> :noh<return><esc>
 
-"highlight columns past 80
-let &colorcolumn=join(range(81,999),",")
+"highlight columns past 180
+let &colorcolumn=join(range(181,999),",")
 highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
 "Haskell
@@ -220,11 +222,11 @@ let g:tagbar_type_haskell = {
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-"ignore same files git ignores in CtrlP
-"let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co
-"--exclude-standard', 'find %s -type f']
 ""Search from current directory instead of project root
 let g:ctrlp_working_path_mode = 0
+
+" Neocomplete config
+let g:neocomplete#enable_at_startup = 1
 
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
@@ -232,8 +234,6 @@ let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' ch
 let g:ale_linters = {
 \    'typescript': ['tslint', 'tsserver'],
 \}
-
-let g:ale_echo_cursor = 0
 
 " Set this setting in vimrc if you want to fix files automatically on save.
 " This is off by default.
