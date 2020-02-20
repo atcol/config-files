@@ -155,6 +155,8 @@ set pdev=pdf
 set printoptions=paper:A4,syntax:y,wrap:y,duplex:long
 set hlsearch
 set nofoldenable
+" Allow searching via selection
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 vnoremap > >gv
 vnoremap < <gv
 "if has("gui_running")
