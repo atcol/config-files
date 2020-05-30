@@ -14,6 +14,7 @@ else
     call plug#begin('~/.vim/plugged')
 endif
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
 Plug 'xolox/vim-session'            "Save and load sessions
 Plug 'xolox/vim-misc'
@@ -49,7 +50,6 @@ Plug 'heavenshell/vim-jsdoc'
 "
 Plug 'leafgarland/typescript-vim'
 Plug 'palantir/tslint'
-Plug 'Quramy/tsuquyomi'
 
 " HTML and HTML templating
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -62,9 +62,6 @@ Plug 'raichoo/haskell-vim'
 Plug 'eagletmt/ghcmod-vim'
 Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
-
-" C/C++
-Plug 'https://github.com/WolfgangMehner/c-support'
 
 " Rust
 Plug 'rust-lang/rust.vim'
