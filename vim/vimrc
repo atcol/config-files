@@ -14,7 +14,6 @@ else
     call plug#begin('~/.vim/plugged')
 endif
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
 Plug 'xolox/vim-session'            "Save and load sessions
 Plug 'xolox/vim-misc'
@@ -33,6 +32,10 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
+" Use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+
 " Dhall
 Plug 'vmchale/dhall-vim'
 
@@ -50,6 +53,7 @@ Plug 'heavenshell/vim-jsdoc'
 "
 Plug 'leafgarland/typescript-vim'
 Plug 'palantir/tslint'
+Plug 'Quramy/tsuquyomi'
 
 " HTML and HTML templating
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -62,6 +66,9 @@ Plug 'raichoo/haskell-vim'
 Plug 'eagletmt/ghcmod-vim'
 Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
+
+" C/C++
+Plug 'https://github.com/WolfgangMehner/c-support'
 
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -232,6 +239,7 @@ let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' ch
 
 let g:ale_linters = {
 \    'typescript': ['tslint', 'tsserver'],
+\    'rust': ['analzer']
 \}
 
 " Set this setting in vimrc if you want to fix files automatically on save.
@@ -239,3 +247,10 @@ let g:ale_linters = {
 let g:ale_fix_on_save = 1
 
 :nnoremap <F8> :setl noai nocin nosi inde=<CR>
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+inoremap <silent><expr> <c-space> coc#refresh()
