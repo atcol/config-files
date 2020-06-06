@@ -16,6 +16,7 @@ init :
         cargo install cargo-add
         cargo install cargo-tarpaulin
         cargo install cargo-audit
+        cargo add proptest
 
 .PHONY: build
 build ${DIR_RELEASE}/${BIN_NAME} :
