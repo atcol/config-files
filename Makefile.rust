@@ -13,7 +13,7 @@ init :
         rustup component add clippy
         rustup component add rustfmt
         cargo install cargo-watch
-        cargo install cargo-add
+        cargo install cargo-edit
         cargo install cargo-tarpaulin
         cargo install cargo-audit
         cargo add proptest
