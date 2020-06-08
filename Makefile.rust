@@ -9,7 +9,7 @@ all : build test
 .PHONY: init
 init :
         rustup toolchain install nightly
-        rustup default nightly
+        rustup override set nightly
         rustup component add clippy
         rustup component add rustfmt
         cargo install cargo-watch
