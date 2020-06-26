@@ -16,6 +16,7 @@ init :
         cargo install cargo-edit
         cargo install cargo-tarpaulin
         cargo install cargo-audit
+        cargo install cargo-outdated
         cargo add proptest
 
 .PHONY: build
