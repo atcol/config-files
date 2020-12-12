@@ -1,0 +1,15 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "generic/ubuntu2010"
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y tmux vim
+    su -l vagrant -c "wget https://raw.githubusercontent.com/atcol/config-files/master/tmux.conf -O ~/.tmux.conf"
+    curl -sfL https://get.k3s.io | sh -
+    k3s kubectl get node
+  SHELL
+end
