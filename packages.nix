@@ -24,8 +24,14 @@
     pkgs.fd
     pkgs.xh
     pkgs.zenith
+    pkgs.dhall
+    pkgs.docker
+    pkgs.docker-compose
+    pkgs.terraform
+    pkgs.jq
 
-    # Shell environment
+    # Shell & environment
+    pkgs.niv
     pkgs.starship
     pkgs.tmux
     pkgs.fzf
