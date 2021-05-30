@@ -10,8 +10,5 @@ jobs:
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: 
-        - nix-shell '<home-manager>' -A install
-        - mkdir -p ~/.config/nixpkgs
-        - rm -rf ${HOME}/.config/nixpkgs/home.nix; ln -s ${PWD}/home.nix ${HOME}/.config/nixpkgs/home.nix;
+    - run: nix-shell '<home-manager>' -A install && mkdir -p ~/.config/nixpkgs; rm -rf ${HOME}/.config/nixpkgs/home.nix; ln -s ${PWD}/home.nix ${HOME}/.config/nixpkgs/home.nix; home-manager switch
 
