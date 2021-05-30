@@ -1,3 +1,4 @@
+
 function! BuildVimProc(info)
     if a:info.status == 'installed' || a:info.force
         if has('windows')
@@ -7,86 +8,6 @@ function! BuildVimProc(info)
         endif
     endif
 endfunction
-
-if has('windows')
-    call plug#begin('~/vimfiles/plugged')
-else
-    call plug#begin('~/.vim/plugged')
-endif
-
-Plug 'vim-airline/vim-airline'      "Buffer list and bottom bar
-Plug 'xolox/vim-session'            "Save and load sessions
-Plug 'xolox/vim-misc'
-Plug 'tpope/vim-fugitive'           "Git
-
-Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar'
-
-Plug 'kien/ctrlp.vim'               "File/buffer search
-Plug 'airblade/vim-gitgutter'       "Git changes column
-
-Plug 'Shougo/vimproc.vim',  { 'do': function('BuildVimProc') }
-
-" Dhall
-Plug 'vmchale/dhall-vim'
-
-" Nix
-Plug 'LnL7/vim-nix'
-
-" Javascript
-Plug 'pangloss/vim-javascript'
-Plug 'maksimr/vim-jsbeautify'
-Plug 'heavenshell/vim-jsdoc'
-
-" Typescript
-"
-Plug 'leafgarland/typescript-vim'
-Plug 'palantir/tslint'
-Plug 'Quramy/tsuquyomi'
-
-" HTML and HTML templating
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plug 'pbrisbin/html-template-syntax'
-Plug 'digitaltoad/vim-jade'
-Plug 'mustache/vim-mustache-handlebars'
-
-" Haskell
-Plug 'raichoo/haskell-vim'
-Plug 'eagletmt/ghcmod-vim'
-Plug 'eagletmt/neco-ghc'
-Plug 'nbouscal/vim-stylish-haskell'
-
-" C/C++
-Plug 'https://github.com/WolfgangMehner/c-support'
-
-" Java
-Plug 'artur-shaik/vim-javacomplete2'
-
-" Rust
-Plug 'rust-lang/rust.vim'
-
-" Ansible
-Plug 'pearofducks/ansible-vim'
-
-" Markdown
-Plug 'plasticboy/vim-markdown'
-
-" Multi-entry selection UI
-Plug 'junegunn/fzf'
-
-" Collection of common configurations for the Nvim LSP client
-Plug 'neovim/nvim-lspconfig'
-
-" Extensions to built-in LSP, for example, providing type inlay hints
-Plug 'nvim-lua/lsp_extensions.nvim'
-
-" Autocompletion framework for built-in LSP
-Plug 'nvim-lua/completion-nvim'
-
-" External plugins for nvim-compe
-Plug 'hrsh7th/vim-vsnip'
-
-call plug#end()
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -98,69 +19,34 @@ set hidden
 " noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
 
-set completeopt=menuone,noinsert,noselect
-
 " Avoid showing extra messages when using completion
 set shortmess+=c
 
 " Configure LSP
 " https://github.com/neovim/nvim-lspconfig#rust_analyzer
-lua <<EOF
+lua << EOF
+  -- nvim_lsp object
+  local nvim_lsp = require'lspconfig'
 
--- nvim_lsp object
-local nvim_lsp = require'lspconfig'
+  -- function to attach completion when setting up lsp
+  local on_attach = function(client)
+      require'completion'.on_attach(client)
+  end
 
--- function to attach completion when setting up lsp
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-end
+  -- Enable rust_analyzer
+  nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
 
--- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
-
--- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
+  -- Enable diagnostics
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = true,
+      signs = true,
+      update_in_insert = true,
+    }
+  )
 EOF
 
-" Code navigation shortcuts
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-l> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.formatting()<CR>
-
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
-
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
-\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
-
 let $GIT_SSL_NO_VERIFY = 'true'
-
-if has('gui_running')
-    set guioptions-=L
-    set guioptions-=T
-    set guioptions-=m
-endif
-
 nnoremap <C-K> :bnext<CR>
 nnoremap <C-J> :bprev<CR>
 
@@ -182,13 +68,11 @@ let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|
 " Vimfiler don't jump to first child
 let g:vimfiler_expand_jump_to_first_child = 0
 
-set hidden
 set noswapfile
 set nocompatible
 filetype plugin indent on
 
 autocmd! bufwritepost .vimrc source %
-map <F3> :VimFilerCurrentDir -explorer -auto-expand<CR>
 set clipboard=unnamed
 set number
 syntax on
@@ -215,14 +99,6 @@ set nostartofline
 set t_Co=256
 set fileformat=unix
 set fileformats=unix,dos
-
-colorscheme torte
-
-if has('gui_running')
-    if has('gui_win32')
-        set guifont=ProFontWindows
-    endif
-endif
 set pdev=pdf
 set printoptions=paper:A4,syntax:y,wrap:y,duplex:long
 set hlsearch
@@ -232,12 +108,6 @@ set nofoldenable
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 vnoremap > >gv
 vnoremap < <gv
-"if has("gui_running")
-"    set guioptions+=LlRrb
-"    set guioptions-=LlRrb
-"    set guioptions-=m
-"    set guioptions-=T
-"endif
 " Unbind the cursor keys in insert, normal and visual modes.
 for prefix in ['i', 'n', 'v']
     for key in ['<Up>', '<Down>', '<Left>', '<Right>']
@@ -271,16 +141,45 @@ let g:ctrlp_working_path_mode = 0
 " Neocomplete config
 let g:neocomplete#enable_at_startup = 1
 
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
-
-" Set this setting in vimrc if you want to fix files automatically on save.
-" This is off by default.
-let g:ale_fix_on_save = 1
-
 :nnoremap <F8> :setl noai nocin nosi inde=<CR>
 
-" Avoid showing extra messages when using completion
-set shortmess+=c
+" Leave this at the end
+" Code navigation shortcuts
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-l> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.formatting()<CR>
 
-colorscheme zellner
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" use <Tab> as trigger keys
+imap <Tab> <Plug>(completion_smart_tab)
+imap <S-Tab> <Plug>(completion_smart_s_tab)
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+" Show diagnostic popup on cursor hold
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+
+" Find text in files using fzf
+nnoremap <silent> <C-f> <esc>:Rg<CR>
+
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+\ lua require'lsp_extensions'.inlay_hints{ prefix = "| ", highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
+
+colorscheme slate

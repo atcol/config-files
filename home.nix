@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let 
   neovim-overlay-commit = "125b7af69ec99e79749877cd820d614f35a64a29";
+  vim-conf = builtins.readFile ./vim/vimrc;
 in
 {
 
@@ -48,7 +49,6 @@ in
 
     plugins = with pkgs.vimPlugins; [
       vim-airline
-      session
       vim-misc
       vim-fugitive
       tagbar
@@ -71,192 +71,7 @@ in
       completion-nvim
     ];
 
-    extraConfig = ''
-
-      function! BuildVimProc(info)
-          if a:info.status == 'installed' || a:info.force
-              if has('windows')
-                  !tools\\update-dll-mingw
-              else
-                  !make
-              endif
-          endif
-      endfunction
-
-      " Required for operations modifying multiple buffers like rename.
-      set hidden
-
-      " Set completeopt to have a better completion experience
-      " :help completeopt
-      " menuone: popup even when there's only one match
-      " noinsert: Do not insert text until a selection is made
-      " noselect: Do not select, force user to select one from the menu
-      set completeopt=menuone,noinsert,noselect
-
-      " Avoid showing extra messages when using completion
-      set shortmess+=c
-
-      " Configure LSP
-      " https://github.com/neovim/nvim-lspconfig#rust_analyzer
-      lua << EOF
-        -- nvim_lsp object
-        local nvim_lsp = require'lspconfig'
-
-        -- function to attach completion when setting up lsp
-        local on_attach = function(client)
-            require'completion'.on_attach(client)
-        end
-
-        -- Enable rust_analyzer
-        nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
-
-        -- Enable diagnostics
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-          vim.lsp.diagnostic.on_publish_diagnostics, {
-            virtual_text = true,
-            signs = true,
-            update_in_insert = true,
-          }
-        )
-      EOF
-
-      let $GIT_SSL_NO_VERIFY = 'true'
-      nnoremap <C-K> :bnext<CR>
-      nnoremap <C-J> :bprev<CR>
-
-      command! Bd bp | sp | bn | bd
-      nnoremap <C-C> :Bd<CR>
-
-      "Don't autoload sessions, but autosave on exit and periodically
-      let g:session_autosave='yes'
-      let g:session_autosave_periodic=2
-      let g:session_autoload='no'
-
-      "Use filename rather than full path in airline buffer list
-      let g:airline#extensions#tabline#enabled = 1
-      let g:airline#extensions#tabline#fnamemod = ':t'
-
-      "ignore same files git ignores in CtrlP
-      let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|ico|git|svn))$'
-
-      " Vimfiler don't jump to first child
-      let g:vimfiler_expand_jump_to_first_child = 0
-
-      set noswapfile
-      set nocompatible
-      filetype plugin indent on
-
-      autocmd! bufwritepost .vimrc source %
-      set clipboard=unnamed
-      set number
-      syntax on
-      set wildmode=longest:list
-      set wildmenu
-      set history=1000
-      set expandtab
-      set tabstop=2
-      set softtabstop=2
-      set shiftwidth=2
-      set autoindent
-      set smartindent
-      set smarttab
-      set textwidth=0
-      set wrapmargin=0
-      set colorcolumn=180
-      set ruler
-      set confirm
-      set mouse+=a
-      set visualbell
-      set backspace=indent,eol,start
-      set shiftround
-      set nostartofline
-      set t_Co=256
-      set fileformat=unix
-      set fileformats=unix,dos
-      set pdev=pdf
-      set printoptions=paper:A4,syntax:y,wrap:y,duplex:long
-      set hlsearch
-      set nofoldenable
-
-      " Allow searching via selection
-      vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-      vnoremap > >gv
-      vnoremap < <gv
-      " Unbind the cursor keys in insert, normal and visual modes.
-      for prefix in ['i', 'n', 'v']
-          for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-              exe prefix . "noremap " . key . " <Nop>"
-          endfor
-      endfor
-
-      "nnoremap <esc> :noh<return><esc>
-
-      "highlight columns past 180
-      let &colorcolumn=join(range(181,999),",")
-      highlight ColorColumn ctermbg=235 guibg=#2c2d27
-
-      "Haskell
-      autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-      let g:haskellmode_completion_ghc = 0
-      let g:necoghc_use_stack = 1
-      let g:necoghc_enable_detailed_browse = 1 "Show types in completion suggestions
-      nmap <silent> <leader>ht :GhcModType<CR>
-      nmap <silent> <leader>hT :GhcModTypeInsert<CR>
-      let g:slime_target = "tmux"
-      let g:slime_paste_file = tempname()
-      nmap <F8> :TagbarToggle<CR>
-      let g:tagbar_autofocus = 1
-      set statusline+=%#warningmsg#
-      set statusline+=%*
-
-      ""Search from current directory instead of project root
-      let g:ctrlp_working_path_mode = 0
-
-      " Neocomplete config
-      let g:neocomplete#enable_at_startup = 1
-
-      :nnoremap <F8> :setl noai nocin nosi inde=<CR>
-
-      colorscheme slate
-      " Leave this at the end
-      " Code navigation shortcuts
-      nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-      nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-      nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-      nnoremap <silent> <c-l> <cmd>lua vim.lsp.buf.signature_help()<CR>
-      nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-      nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-      nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-      nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-      nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-      nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
-      nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
-      nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.formatting()<CR>
-
-      " Use <Tab> and <S-Tab> to navigate through popup menu
-      inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-      inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-      " use <Tab> as trigger keys
-      imap <Tab> <Plug>(completion_smart_tab)
-      imap <S-Tab> <Plug>(completion_smart_s_tab)
-
-      " Set updatetime for CursorHold
-      " 300ms of no cursor movement to trigger CursorHold
-      set updatetime=300
-      " Show diagnostic popup on cursor hold
-      autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-
-      " Goto previous/next diagnostic warning/error
-      nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-      nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-
-      " Find text in files using fzf
-      nnoremap <silent> <C-f> <esc>:Rg<CR>
-
-      autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
-      \ lua require'lsp_extensions'.inlay_hints{ prefix = "| ", highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
-      '';
+    extraConfig = vim-conf;
   };
 
 }
