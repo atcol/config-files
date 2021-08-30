@@ -19,8 +19,8 @@ in
   ];
 
   programs.home-manager.enable = true;
-  home.username = "alex";
-  home.homeDirectory = "/home/alex";
+  home.username = "atc";
+  home.homeDirectory = "/home/atc";
   home.stateVersion = "21.05";
 
   programs.git = {

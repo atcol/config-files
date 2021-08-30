@@ -8,12 +8,12 @@ in
     viAlias = true;
     vimAlias = true;
 
-    package = pkgs.neovim-nightly;
+    #package = pkgs.neovim-nightly;
 
     plugins = with pkgs.vimPlugins; [
       vim-airline
       vim-misc
-      vim-fugitive
+      #vim-fugitive
       tagbar
       ctrlp
       vim-gitgutter

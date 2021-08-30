@@ -9,6 +9,12 @@ let
   };
 in
 {
+  programs.git = {
+    enable = true;
+    userName  = "Alex";
+    userEmail = "codeetc@pm.me";
+  };
+
   programs.bash = {
     inherit shellAliases;
     enable = true;
