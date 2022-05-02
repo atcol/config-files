@@ -29,6 +29,7 @@
     pkgs.docker-compose
     pkgs.terraform
     pkgs.jq
+    pkgs.cue
 
     # Shell & environment
     pkgs.niv

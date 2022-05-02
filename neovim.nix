@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   vim-conf = builtins.readFile ./vim/vimrc;
+  unstable = import <unstable> {};
 in
 {
   programs.neovim = {
@@ -8,30 +9,47 @@ in
     viAlias = true;
     vimAlias = true;
 
-    #package = pkgs.neovim-nightly;
+    package = unstable.neovim-unwrapped;
 
     plugins = with pkgs.vimPlugins; [
       vim-airline
-      vim-misc
-      #vim-fugitive
       tagbar
       ctrlp
       vim-gitgutter
       vimproc
+
+      # Languages
       dhall-vim
       vim-nix
-      sparkup
       haskell-vim
       ghcmod-vim
       neco-ghc
       vim-stylish-haskell
+      rust-tools-nvim
       rust-vim
       vim-markdown
-      fzf-vim # Fuzzy search
+
+      # Fuzzy search
+      fzf-vim 
+
+      # Language server
       nvim-lspconfig
+      luasnip
       lsp_extensions-nvim
       lsp-status-nvim
-      completion-nvim
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp-vsnip
+      cmp-path
+      cmp-buffer
+
+      # Utils
+      popup-nvim
+      plenary-nvim
+      telescope-nvim
+
+      # Package management
+      packer-nvim
     ];
 
     extraConfig = vim-conf;

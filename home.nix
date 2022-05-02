@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 let 
-  neovim-overlay-commit = "125b7af69ec99e79749877cd820d614f35a64a29";
+  #neovim-overlay-commit = "125b7af69ec99e79749877cd820d614f35a64a29";
+  #neovim-overlay-commit = "master";
+  # 0.7
+  neovim-overlay-commit = "184a46c1fc32d0b3c1a5aaad26249f1a970e4d3c";
+
   imports = [ 
     ./packages.nix
     ./shell.nix
@@ -12,11 +16,11 @@ in
 {
   inherit imports;
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/neovim-nightly-overlay/archive/${neovim-overlay-commit}.tar.gz";
-    }))
-  ];
+  #nixpkgs.overlays = [
+  #  (import (builtins.fetchTarball {
+  #    url = "https://github.com/nix-community/neovim-nightly-overlay/archive/${neovim-overlay-commit}.tar.gz";
+  #  }))
+  #];
 
   programs.home-manager.enable = true;
   home.username = "atc";

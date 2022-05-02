@@ -1,16 +1,12 @@
+" This is an example on how rust-analyzer can be configure using rust-tools
 
-function! BuildVimProc(info)
-    if a:info.status == 'installed' || a:info.force
-        if has('windows')
-            !tools\\update-dll-mingw
-        else
-            !make
-        endif
-    endif
-endfunction
+"Use filename rather than full path in airline buffer list
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
-" Required for operations modifying multiple buffers like rename.
-set hidden
+"ignore same files git ignores in CtrlP
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|doc)|(\.(swp|ico|git|svn))$'
+
 
 " Set completeopt to have a better completion experience
 " :help completeopt
@@ -22,38 +18,116 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing extra messages when using completion
 set shortmess+=c
 
-" Configure LSP
-" https://github.com/neovim/nvim-lspconfig#rust_analyzer
-lua << EOF
-  -- nvim_lsp object
-  local nvim_lsp = require'lspconfig'
+" Configure LSP through rust-tools.nvim plugin.
+" rust-tools will configure and enable certain LSP features for us.
+" See https://github.com/simrat39/rust-tools.nvim#configuration
 
-  -- function to attach completion when setting up lsp
-  local on_attach = function(client)
-      require'completion'.on_attach(client)
-  end
+lua <<EOF
 
-  -- Enable rust_analyzer
-  nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+local use = require('packer').use
+require('packer').startup(function()
+  use 'wbthomason/packer.nvim' -- Package manager
+  use 'projekt0n/github-nvim-theme'
+  use 'sainnhe/sonokai'
+end)
 
-  -- Enable diagnostics
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text = true,
-      signs = true,
-      update_in_insert = true,
-    }
-  )
+-- nvim_lsp object
+local nvim_lsp = require'lspconfig'
+
+local opts = {
+    tools = {
+        autoSetHints = true,
+        hover_with_actions = true,
+        runnables = {
+            use_telescope = true
+        },
+        inlay_hints = {
+            show_parameter_hints = true,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+        },
+    },
+
+    -- all the opts to send to nvim-lspconfig
+    -- these override the defaults set by rust-tools.nvim
+    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+    server = {
+        -- on_attach is a callback called when the language server attachs to the buffer
+        -- on_attach = on_attach,
+        settings = {
+            -- to enable rust-analyzer settings visit:
+            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+            ["rust-analyzer"] = {
+                -- enable clippy on save
+                checkOnSave = {
+                    command = "clippy"
+                },
+            }
+        }
+    },
+}
+
+require('rust-tools').setup(opts)
 EOF
 
-let $GIT_SSL_NO_VERIFY = 'true'
+" Setup Completion
+" See https://github.com/hrsh7th/nvim-cmp#basic-configuration
+lua <<EOF
+local cmp = require'cmp'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+
+  -- Installed sources
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+})
+EOF
+
+" have a fixed column for the diagnostics to appear in
+" this removes the jitter when warnings/errors flow in
+set signcolumn=yes
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+
+" Show diagnostic popup on cursor hover
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.diagnostic.goto_next()<CR>
+
 nnoremap <C-K> :bnext<CR>
 nnoremap <C-J> :bprev<CR>
-
+"
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
-
-"Don't autoload sessions, but autosave on exit and periodically
+"
+""Don't autoload sessions, but autosave on exit and periodically
 let g:session_autosave='yes'
 let g:session_autosave_periodic=2
 let g:session_autoload='no'
@@ -97,39 +171,15 @@ set backspace=indent,eol,start
 set shiftround
 set nostartofline
 set t_Co=256
-set fileformat=unix
 set fileformats=unix,dos
 set pdev=pdf
 set printoptions=paper:A4,syntax:y,wrap:y,duplex:long
 set hlsearch
 set nofoldenable
-
-" Allow searching via selection
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-vnoremap > >gv
-vnoremap < <gv
-" Unbind the cursor keys in insert, normal and visual modes.
-for prefix in ['i', 'n', 'v']
-    for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-        exe prefix . "noremap " . key . " <Nop>"
-    endfor
-endfor
-
-"nnoremap <esc> :noh<return><esc>
-
 "highlight columns past 180
 let &colorcolumn=join(range(181,999),",")
 highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
-"Haskell
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-let g:haskellmode_completion_ghc = 0
-let g:necoghc_use_stack = 1
-let g:necoghc_enable_detailed_browse = 1 "Show types in completion suggestions
-nmap <silent> <leader>ht :GhcModType<CR>
-nmap <silent> <leader>hT :GhcModTypeInsert<CR>
-let g:slime_target = "tmux"
-let g:slime_paste_file = tempname()
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 set statusline+=%#warningmsg#
@@ -138,48 +188,39 @@ set statusline+=%*
 ""Search from current directory instead of project root
 let g:ctrlp_working_path_mode = 0
 
-" Neocomplete config
-let g:neocomplete#enable_at_startup = 1
-
 :nnoremap <F8> :setl noai nocin nosi inde=<CR>
 
-" Leave this at the end
-" Code navigation shortcuts
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-l> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.formatting()<CR>
-
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
-
-" Set updatetime for CursorHold
-" 300ms of no cursor movement to trigger CursorHold
-set updatetime=300
 " Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+"autocmd CursorHold * lua vim.lsp.diagnostic.open_float()
 
 " Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
 " Find text in files using fzf
-nnoremap <silent> <C-f> <esc>:Rg<CR>
+nnoremap <silent> <C-h> <esc>:Rg<CR>
 
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+"autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+autocmd CursorMoved,InsertLeave,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = "| ", highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
 
-colorscheme slate
+" Quick-fix
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+
+colorscheme sonokai
+
+" Code navigation shortcuts
+" as found in :help lsp
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.format()<CR>
+nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
+
