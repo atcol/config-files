@@ -117,15 +117,6 @@ set updatetime=300
 " Show diagnostic popup on cursor hover
 autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> g[ <cmd>lua vim.diagnostic.goto_prev()<CR>
-nnoremap <silent> g] <cmd>lua vim.diagnostic.goto_next()<CR>
-
-nnoremap <C-K> :bnext<CR>
-nnoremap <C-J> :bprev<CR>
-"
-command! Bd bp | sp | bn | bd
-nnoremap <C-C> :Bd<CR>
 "
 ""Don't autoload sessions, but autosave on exit and periodically
 let g:session_autosave='yes'
@@ -224,3 +215,12 @@ nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <F4>  <cmd>lua vim.lsp.buf.format()<CR>
 nnoremap <silent> <F5>  <cmd>lua vim.lsp.buf.code_action()<CR>
 
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.diagnostic.goto_next()<CR>
+
+nnoremap <C-K> :bnext<CR>
+nnoremap <C-J> :bprev<CR>
+
+command! Bd bp | sp | bn | bd
+nnoremap <C-C> :Bd<CR>
