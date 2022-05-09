@@ -1,7 +1,5 @@
 { config, pkgs, ... }:
 let 
-  #neovim-overlay-commit = "125b7af69ec99e79749877cd820d614f35a64a29";
-  #neovim-overlay-commit = "master";
   # 0.7
   neovim-overlay-commit = "184a46c1fc32d0b3c1a5aaad26249f1a970e4d3c";
 

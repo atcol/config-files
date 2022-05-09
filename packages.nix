@@ -10,6 +10,9 @@
     pkgs.cargo-release
     pkgs.cargo-udeps
 
+    # Ocaml
+    pkgs.ocamlPackages.ocaml-lsp
+
     # General dev related tooling
     pkgs.gperftools
     pkgs.wrk
@@ -38,5 +41,7 @@
     pkgs.fzf
     pkgs.htop
     pkgs.terraform
+    pkgs.kubectl
+    pkgs.bat
   ];
 }
