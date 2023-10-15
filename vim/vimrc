@@ -73,7 +73,19 @@ local opts = {
 }
 
 require('rust-tools').setup(opts)
+
+require('FTerm').setup({
+    border = 'double',
+    dimensions  = {
+        height = 0.9,
+        width = 0.9,
+    },
+})
+
+-- Example keybindings
+vim.keymap.set('n', '<F1>', '<CMD>lua require("FTerm").toggle()<CR>')
 EOF
+
 
 lua <<EOF
 local opts = { noremap=true, silent=true }
@@ -249,3 +261,4 @@ nnoremap <C-J> :bprev<CR>
 
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
+

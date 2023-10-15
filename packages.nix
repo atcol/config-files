@@ -21,7 +21,6 @@
     pkgs.git
     pkgs.watchexec
     pkgs.ripgrep
-    pkgs.exa
     pkgs.tokei
     pkgs.bat
     pkgs.fd

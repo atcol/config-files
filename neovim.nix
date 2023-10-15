@@ -47,6 +47,7 @@ in
       popup-nvim
       plenary-nvim
       telescope-nvim
+      FTerm-nvim
 
       # Package management
       packer-nvim
