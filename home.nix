@@ -23,7 +23,7 @@ in
   programs.home-manager.enable = true;
   home.username = "atc";
   home.homeDirectory = "/home/atc";
-  home.stateVersion = "21.05";
+  home.stateVersion = "23.11";
 
   programs.git = {
     enable = true;
