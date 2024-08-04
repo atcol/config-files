@@ -1,46 +1,46 @@
 { config, lib, pkgs, ... }:
 {
-  home.packages = [
+  home.packages = with pkgs; [
     # Rust related
-    pkgs.cargo-watch
-    pkgs.cargo-edit
-    pkgs.cargo-tarpaulin
-    pkgs.cargo-audit
-    pkgs.cargo-outdated
-    pkgs.cargo-release
-    pkgs.cargo-udeps
-
-    # Ocaml
-    pkgs.ocamlPackages.ocaml-lsp
+    cargo-watch
+    cargo-edit
+    cargo-tarpaulin
+    cargo-audit
+    cargo-outdated
+    cargo-release
+    cargo-udeps
 
     # General dev related tooling
-    pkgs.gperftools
-    pkgs.wrk
-    pkgs.valgrind
-    pkgs.rust-analyzer
-    pkgs.git
-    pkgs.watchexec
-    pkgs.ripgrep
-    pkgs.tokei
-    pkgs.bat
-    pkgs.fd
-    pkgs.xh
-    pkgs.zenith
-    pkgs.dhall
-    pkgs.docker
-    pkgs.docker-compose
-    pkgs.terraform
-    pkgs.jq
-    pkgs.cue
+    gperftools
+    wrk
+    valgrind
+    rust-analyzer
+    git
+    watchexec
+    ripgrep
+    tokei
+    bat
+    fd
+    xh
+    zenith
+    dhall
+    docker
+    docker-compose
+    terraform
+    jq
+    cue
+    dotenv
+    devenv
+    flutter
 
     # Shell & environment
-    pkgs.niv
-    pkgs.starship
-    pkgs.tmux
-    pkgs.fzf
-    pkgs.htop
-    pkgs.terraform
-    pkgs.kubectl
-    pkgs.bat
+    niv
+    starship
+    tmux
+    fzf
+    htop
+    terraform
+    kubectl
+    bat
   ];
 }
