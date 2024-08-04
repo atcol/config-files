@@ -29,7 +29,7 @@
     terraform
     jq
     cue
-    dotenv
+    direnv
     devenv
     flutter
 
