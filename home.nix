@@ -5,7 +5,7 @@ let
 
   imports = [ 
     ./packages.nix
-    ./shell.nix
+    ./custom-shell.nix
     ./starship.nix
     ./neovim.nix
     ./tmux.nix
