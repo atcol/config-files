@@ -10,7 +10,7 @@
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }: 
     flake-utils.lib.eachDefaultSystem (system: {
-      nixosModules.home = { ... }: { options = {}; config = import ./home.nix; };
+      nixosModules.default = { ... }: { options = {}; config = import ./home.nix; };
     })
   ;
 }
