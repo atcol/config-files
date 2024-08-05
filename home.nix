@@ -14,16 +14,10 @@ in
 {
   inherit imports;
 
-  #nixpkgs.overlays = [
-  #  (import (builtins.fetchTarball {
-  #    url = "https://github.com/nix-community/neovim-nightly-overlay/archive/${neovim-overlay-commit}.tar.gz";
-  #  }))
-  #];
-
   programs.home-manager.enable = true;
   home.username = "atc";
   home.homeDirectory = "/home/atc";
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
 
   programs.git = {
     enable = true;
@@ -33,23 +27,9 @@ in
     shellInit = ''
       starship init fish | source
       export EDITOR=nvim
-
-      set fish_greeting ""
-      fish_add_path --path ~/go/bin
-      fish_add_path --path ~/.cargo/bin
-      fish_add_path --path ~/.local/bin
-      #export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+      eval "$(direnv hook bash)"
     '';
     plugins = [
-      {
-        name = "fzf.fish";
-        src = pkgs.fetchFromGitHub { 
-          owner = "PatrickF1";
-          repo = "fzf.fish";
-          rev = "6d8e962f3ed84e42583cec1ec4861d4f0e6c4eb3";
-          sha256 = "0lv2gl9iylllqp9v0wqib3rll2ii1sm2xkjfzlqhybvkhbrdvffj";
-        };
-      }
     ];
     shellAliases = {
       ls = "exa -G  --color auto --icons -a -s type";

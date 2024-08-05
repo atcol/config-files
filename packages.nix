@@ -31,7 +31,6 @@
     cue
     direnv
     devenv
-    flutter
 
     # Shell & environment
     niv
