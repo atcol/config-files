@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     # Rust related
+    cargo
     cargo-watch
     cargo-edit
     cargo-tarpaulin
@@ -11,6 +12,8 @@
     cargo-udeps
 
     # General dev related tooling
+    ollama
+    rerun
     gperftools
     wrk
     valgrind
