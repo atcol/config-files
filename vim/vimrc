@@ -122,8 +122,7 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim' -- Package manager
   use 'sainnhe/sonokai'
   use 'ocaml/vim-ocaml'
-  use 'Olical/conjure'
-  use "David-Kunz/gen.nvim"
+  use 'github/copilot.vim'
 
   require('gen').setup({
       model = "mistral", -- The default model to use.
