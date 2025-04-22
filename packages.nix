@@ -34,7 +34,6 @@
     cue
     direnv
     devenv
-    dotenv
     jujutsu
 
     # Shell & environment
