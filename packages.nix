@@ -35,6 +35,8 @@
     direnv
     devenv
     jujutsu
+    qsv
+    vscode
 
     # Shell & environment
     niv
