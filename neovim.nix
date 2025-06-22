@@ -9,7 +9,7 @@ in
     viAlias = true;
     vimAlias = true;
 
-    package = unstable.neovim-unwrapped;
+    #package = unstable.neovim-unwrapped;
 
     plugins = with pkgs.vimPlugins; [
       vim-airline
