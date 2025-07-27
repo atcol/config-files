@@ -13,7 +13,6 @@
 
     # General dev related tooling
     ollama
-    rerun
     gperftools
     wrk
     valgrind
