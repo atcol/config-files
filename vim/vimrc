@@ -106,7 +106,7 @@ au BufRead,BufNewFile *.ml,*.mli,*.mly,*.mll compiler ocaml
 " Quick-fix
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
 
-colorscheme sonokai
+colorscheme koehler
 
 nnoremap <C-K> :bnext<CR>
 nnoremap <C-J> :bprev<CR>
