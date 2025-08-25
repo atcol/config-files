@@ -37,6 +37,7 @@
     jujutsu
     qsv
     vscode
+    claude-code
 
     # Shell & environment
     niv
