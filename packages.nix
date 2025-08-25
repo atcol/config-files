@@ -18,6 +18,7 @@
     valgrind
     rust-analyzer
     git
+    gitui
     watchexec
     ripgrep
     tokei
