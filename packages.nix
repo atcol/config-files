@@ -38,6 +38,7 @@
     qsv
     vscode
     claude-code
+    awscli
 
     # Shell & environment
     niv
