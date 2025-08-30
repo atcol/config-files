@@ -6,6 +6,10 @@ let
     we = "watchexec";
     find = "fd";
     cloc = "tokei";
+    gpu = "git pull --rebase";
+    gpus = "git push";
+    gpusu = "git push --set-upstream origin ";
+    gcom = "git commit ";
   };
 in
 {
