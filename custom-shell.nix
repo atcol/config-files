@@ -38,4 +38,4 @@ in
     thoughts-locator        = ./claude/agents/thoughts-locator.md;
     web-search-researcher   = ./claude/agents/web-search-researcher.md;
   };
-}:
+};
