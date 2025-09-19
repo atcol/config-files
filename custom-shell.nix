@@ -30,6 +30,8 @@ in
     '';
   };
 
+  programs.claude-code.enable = true;
+
   programs.claude-code.agents = {
     codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
     codebase-locator        = ./claude/agents/codebase-locator.md;
