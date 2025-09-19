@@ -32,7 +32,6 @@ in
 
   programs.claude-code.agents = {
     codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
-    codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
     codebase-locator        = ./claude/agents/codebase-locator.md;
     codebase-pattern-finder = ./claude/agents/codebase-pattern-finder.md;
     thoughts-analyzer       = ./claude/agents/thoughts-analyzer.md;
