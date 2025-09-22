@@ -26,7 +26,6 @@ in
     initExtra = ''
       eval "$(starship init bash)"
       set -o vi
-
     '';
   };
 
@@ -43,14 +42,14 @@ in
 
   programs.claude-code.commands = {
     commit                    = ./claude/commands/commit.md;
-    create_plan_generic       =  ./claude/commands/create_plan_generic.md;
-    create_plan               =  ./claude/commands/create_plan.md;
-    create_worktree           =  ./claude/commands/create_worktree.md;
-    debug                     =  ./claude/commands/debug.md;
-    describe_pr               =  ./claude/commands/describe_pr.md;
-    implement_plan            =  ./claude/commands/implement_plan.md;
-    research_codebase_generic =  ./claude/commands/research_codebase_generic.md;
-    research_codebase         =  ./claude/commands/research_codebase.md;
-    validate_plan             =  ./claude/commands/validate_plan.md;
+    create_plan_generic       = ./claude/commands/create_plan_generic.md;
+    create_plan               = ./claude/commands/create_plan.md;
+    create_worktree           = ./claude/commands/create_worktree.md;
+    debug                     = ./claude/commands/debug.md;
+    describe_pr               = ./claude/commands/describe_pr.md;
+    implement_plan            = ./claude/commands/implement_plan.md;
+    research_codebase_generic = ./claude/commands/research_codebase_generic.md;
+    research_codebase         = ./claude/commands/research_codebase.md;
+    validate_plan             = ./claude/commands/validate_plan.md;
   };
 }
