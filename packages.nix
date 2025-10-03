@@ -39,6 +39,7 @@
     vscode
     claude-code
     awscli
+    nodejs
 
     # Shell & environment
     niv
