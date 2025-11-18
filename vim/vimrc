@@ -123,6 +123,7 @@ require('packer').startup(function()
   use 'sainnhe/sonokai'
   use 'ocaml/vim-ocaml'
   use 'github/copilot.vim'
+  use 'mrcjkb/rustaceanvim'
 
   -- require('gen').setup({
   --     model = "mistral", -- The default model to use.
