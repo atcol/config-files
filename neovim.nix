@@ -25,7 +25,7 @@ in
       ghcmod-vim
       neco-ghc
       vim-stylish-haskell
-      rust-tools-nvim
+      #rust-tools-nvim
       rust-vim
       vim-markdown
 
