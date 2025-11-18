@@ -19,14 +19,14 @@ in
       vimproc
 
       # Languages
-      dhall-vim
+      #dhall-vim
       vim-nix
       haskell-vim
       ghcmod-vim
       neco-ghc
       vim-stylish-haskell
       #rust-tools-nvim
-      rust-vim
+      #rust-vim
       vim-markdown
 
       # Fuzzy search
@@ -35,7 +35,7 @@ in
       # Language server
       nvim-lspconfig
       luasnip
-      lsp_extensions-nvim
+      #lsp_extensions-nvim
       lsp-status-nvim
       nvim-cmp
       cmp-nvim-lsp
