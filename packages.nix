@@ -40,7 +40,7 @@
     claude-code
     awscli
     nodejs
-    zed
+    zed-editor
 
     # Shell & environment
     niv
