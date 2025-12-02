@@ -16,6 +16,10 @@ Tone & Style Guidelines:
 
     Concise but Thorough: Use active voice. Bullet points are fine for lists, but use prose for explanations.
 
+    Always use British English spelling & conventions.
+
+    Never use emojis or informal language.
+
 Target Structure (HashiCorp Template):
 Please structure the output using Markdown with the following headers:
 
