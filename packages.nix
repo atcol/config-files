@@ -10,6 +10,7 @@
     cargo-outdated
     cargo-release
     cargo-udeps
+    rustfmt
 
     # General dev related tooling
     ollama
