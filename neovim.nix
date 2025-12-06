@@ -28,13 +28,14 @@ in
       #rust-tools-nvim
       #rust-vim
       vim-markdown
+      rustaceanvim
 
       # Fuzzy search
       fzf-vim 
 
       # Language server
       nvim-lspconfig
-      luasnip
+      #luasnip
       #lsp_extensions-nvim
       lsp-status-nvim
       nvim-cmp

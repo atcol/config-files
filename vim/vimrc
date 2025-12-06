@@ -25,20 +25,20 @@ autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 
 "
 ""Don't autoload sessions, but autosave on exit and periodically
-let g:session_autosave='yes'
-let g:session_autosave_periodic=2
-let g:session_autoload='no'
+" let g:session_autosave='yes'
+" let g:session_autosave_periodic=2
+" let g:session_autoload='no'
 
 "Use filename rather than full path in airline buffer list
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#fnamemod = ':t'
+" 
 "ignore same files git ignores in CtrlP
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|_build|doc)|(\.(swp|ico|git|svn))$'
-
-" Vimfiler don't jump to first child
-let g:vimfiler_expand_jump_to_first_child = 0
-
+" let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|build|_build|doc)|(\.(swp|ico|git|svn))$'
+" 
+" " Vimfiler don't jump to first child
+" let g:vimfiler_expand_jump_to_first_child = 0
+" 
 set noswapfile
 set nocompatible
 filetype plugin indent on
@@ -113,165 +113,4 @@ nnoremap <C-J> :bprev<CR>
 
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
-
-
-lua <<EOF
-
-local use = require('packer').use
-require('packer').startup(function()
-  use 'wbthomason/packer.nvim' -- Package manager
-  use 'sainnhe/sonokai'
-  use 'ocaml/vim-ocaml'
-  use 'github/copilot.vim'
-  use 'mrcjkb/rustaceanvim'
-
-  -- require('gen').setup({
-  --     model = "mistral", -- The default model to use.
-  --     display_mode = "float", -- The display mode. Can be "float" or "split".
-  --     show_prompt = true, -- Shows the Prompt submitted to Ollama.
-  --     show_model = true, -- Displays which model you are using at the beginning of your chat session.
-  --     no_auto_close = false, -- Never closes the window automatically.
-  --     init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
-  --     -- Function to initialize Ollama
-  --     -- command = "curl --silent --no-buffer -X POST http://localhost:11434/api/generate -d $body",
-  --     -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
-  --     -- This can also be a lua function returning a command string, with options as the input parameter.
-  --     -- The executed command must return a JSON object with { response, context }
-  --     -- (context property is optional).
-  --     list_models = '<function>', -- Retrieves a list of model names
-  --     debug = false -- Prints errors and the command which is run.
-  -- })
---  use {
---    "folke/which-key.nvim",
---    config = function()
---      vim.o.timeout = true
---      vim.o.timeoutlen = 300
---      require("which-key").setup {
---        -- your configuration comes here
---        -- or leave it empty to use the default settings
---        -- refer to the configuration section below
---      }
---    end
---  }
-end)
-
-local opts = {
-    tools = {
-        autoSetHints = true,
-        hover_with_actions = true,
-        runnables = {
-            use_telescope = true
-        },
-        inlay_hints = {
-            show_parameter_hints = true,
-            parameter_hints_prefix = "",
-            other_hints_prefix = "",
-        },
-    },
-
-    -- all the opts to send to nvim-lspconfig
-    -- these override the defaults set by rust-tools.nvim
-    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
-    server = {
-        -- on_attach is a callback called when the language server attachs to the buffer
-        -- on_attach = on_attach,
-        settings = {
-            -- to enable rust-analyzer settings visit:
-            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-            ["rust-analyzer"] = {
-                -- enable clippy on save
-                checkOnSave = {
-                    command = "clippy"
-                },
-            }
-        }
-    },
-}
-
--- require('rust-tools').setup(opts)
-
-require('FTerm').setup({
-    border = 'double',
-    dimensions  = {
-        height = 0.9,
-        width = 0.9,
-    },
-})
-
--- Example keybindings
-vim.keymap.set('n', '<F1>', '<CMD>lua require("FTerm").toggle()<CR>')
-
-local opts = { noremap=true, silent=true }
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F1>', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F3>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F4>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F5>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F6>', '<cmd>lua vim.lsp.buf.refactor()<CR>', opts)
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
--- local servers = { 
---   'rust_analyzer',
---   'ocamllsp' 
--- }
--- for _, lsp in pairs(servers) do
---   require('lspconfig')[lsp].setup {
---     on_attach = on_attach,
---     flags = {
---       -- This will be the default in neovim 0.7+
---       debounce_text_changes = 150,
---     }
---   }
--- end
-
--- Setup Completion
--- See https://github.com/hrsh7th/nvim-cmp#basic-configuration
-
-local cmp = require'cmp'
-cmp.setup({
-  snippet = {
-    expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Add tab support
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    })
-  },
-
-  -- Installed sources
-  sources = {
-    -- { name = 'nvim_lsp' },
-    { name = 'vsnip' },
-    { name = 'path' },
-    { name = 'buffer' },
-  },
-})
-EOF
 
