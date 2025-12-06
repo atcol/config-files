@@ -35,22 +35,18 @@ in
 
       # Language server
       nvim-lspconfig
-      #luasnip
-      #lsp_extensions-nvim
+      lsp_extensions-nvim
       lsp-status-nvim
 
       # For completion
       nvim-cmp
       cmp-nvim-lsp
-      cmp-vsnip
       cmp-path
       cmp-buffer
       cmp-nvim-lsp      # LSP completion
       cmp-buffer        # Buffer words
       cmp-path          # File paths
       cmp-cmdline       # Command line
-      
-      # Snippet engine (required by nvim-cmp)
       luasnip
       cmp_luasnip
       
