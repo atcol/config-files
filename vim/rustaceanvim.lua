@@ -71,6 +71,11 @@ vim.g.rustaceanvim = {
         vim.cmd.RustLsp({'hover', 'actions'})
       end, { silent = true, buffer = bufnr, desc = "Hover Actions" })
 
+      -- Rename (Shift+F6 in IntelliJ)
+      vim.keymap.set("n", "<leader>rn", function()
+        vim.lsp.buf.rename()
+      end, { silent = true, buffer = bufnr, desc = "Rename" })
+
       -- Go to definition (Ctrl+B in IntelliJ)
       vim.keymap.set("n", "gd", function()
         vim.lsp.buf.definition()
