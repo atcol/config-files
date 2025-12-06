@@ -55,15 +55,13 @@ in
     ];
 
     extraConfig = vim-conf;
-
-    extraFiles = {
-        extraFiles = {
-          "after/ftplugin/rust.lua" = {
-            text = ''
-              vim.g.mapleader = "\\"
-
-              local bufnr = vim.api.nvim_get_current_buf()
-
+    extraLuaConfig = ''
+      -- Set leader key first if not already set
+      vim.g.mapleader = "\\"
+      
+      vim.g.rustaceanvim = {
+        server = {
+          on_attach = function(client, bufnr)
               -- Code actions (supports rust-analyzer's grouping)
               vim.keymap.set(
                 "n", 
@@ -103,9 +101,9 @@ in
                 end,
                 { silent = true, buffer = bufnr, desc = "Testables" }
               )
-            '';
-        };
-      };
+          end,
+        },
+      }
+    '';
     };
-  };
 }
