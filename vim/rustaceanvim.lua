@@ -4,6 +4,7 @@ vim.g.mapleader = "\\"
 vim.g.rustaceanvim = {
   server = {
     on_attach = function(client, bufnr)
+      vim.g.rustaceanvim.tools.code_actions.ui_select_fallback = true
 
       -- Code actions (supports rust-analyzer's grouping)
 
