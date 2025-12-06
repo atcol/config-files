@@ -121,7 +121,7 @@ local bufnr = vim.api.nvim_get_current_buf()
 -- Code actions (supports rust-analyzer's grouping)
 vim.keymap.set(
   "n", 
-  "<leader>ca", 
+  "<F5>", 
   function()
     vim.cmd.RustLsp('codeAction')
   end,
@@ -131,7 +131,7 @@ vim.keymap.set(
 -- Hover actions (override K)
 vim.keymap.set(
   "n", 
-  "<F5>",
+  "<leader>ca",
   function()
     vim.cmd.RustLsp({'hover', 'actions'})
   end,
