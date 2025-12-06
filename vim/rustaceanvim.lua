@@ -11,7 +11,7 @@ vim.g.rustaceanvim = {
         "n",
         "<F4>",
         function()
-          vim.cmd.RustFmt
+          vim.cmd.RustFmt()
         end,
         { silent = true, buffer = bufnr, desc = "Rust format" }
       )
