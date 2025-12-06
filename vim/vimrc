@@ -114,6 +114,8 @@ nnoremap <C-J> :bprev<CR>
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
 
+lua << EOF
+
 local bufnr = vim.api.nvim_get_current_buf()
 
 -- Code actions (supports rust-analyzer's grouping)
@@ -155,3 +157,4 @@ vim.keymap.set(
   end,
   { silent = true, buffer = bufnr, desc = "Testables" }
 )
+EOF
