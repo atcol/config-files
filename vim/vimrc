@@ -115,6 +115,7 @@ command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
 
 lua << EOF
+vim.g.mapleader = "\\"
 
 local bufnr = vim.api.nvim_get_current_buf()
 
