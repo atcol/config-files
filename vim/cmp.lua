@@ -1,60 +1,37 @@
--- Setup nvim-cmp
-local cmp = require('cmp')
-local luasnip = require('luasnip')
+-- -- Setup nvim-cmp
+local cmp = require'cmp'
+
+-- Enable debug logging
+--vim.lsp.set_log_level("debug")
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  
   mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    
-    -- Tab completion
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
   }),
-  
+
+  -- Installed sources
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = 'nvim_lsp', priority = 1000 },
+    { name = 'vsnip', priority = 100 },
   }, {
-    { name = 'buffer' },
-    { name = 'path' },
+    { name = 'path', priority = 50 },
+    { name = 'buffer', priority = 50 },
   }),
-  
-  -- Optional: add icons
-  formatting = {
-    format = require('lspkind').cmp_format({
-      mode = 'symbol_text',
-      maxwidth = 50,
-    }),
-  },
 })
-
--- Configure LSP capabilities for nvim-cmp
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-

@@ -1,23 +1,33 @@
 { config, lib, pkgs, ... }:
+let
+  fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz") {};
+in 
 {
   home.packages = with pkgs; [
     # Rust related
-    cargo
-    cargo-watch
-    cargo-edit
-    cargo-tarpaulin
-    cargo-audit
-    cargo-outdated
-    cargo-release
-    cargo-udeps
-    rustfmt
+    (fenix.complete.withComponents [
+      "cargo"
+      "clippy"
+      "rust-src"
+      "rustc"
+      "rustfmt"
+      "rust-analyzer"
+    ])
+    #cargo-watch
+    #cargo-edit
+    #cargo-tarpaulin
+    #cargo-audit
+    #cargo-outdated
+    #cargo-release
+    #cargo-udeps
+    #rustup
+#    clippy
 
     # General dev related tooling
     ollama
     gperftools
     wrk
     valgrind
-    rust-analyzer
     git
     gitui
     watchexec

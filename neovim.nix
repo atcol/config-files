@@ -1,15 +1,12 @@
 { config, lib, pkgs, ... }:
 let
   vim-conf = builtins.readFile ./vim/vimrc;
-  unstable = import <unstable> {};
 in
 {
   programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
-
-    #package = unstable.neovim-unwrapped;
 
     plugins = with pkgs.vimPlugins; [
       vim-airline
@@ -25,10 +22,7 @@ in
       ghcmod-vim
       neco-ghc
       vim-stylish-haskell
-      #rust-tools-nvim
-      #rust-vim
       vim-markdown
-      rustaceanvim
 
       # Fuzzy search
       fzf-vim 
@@ -39,33 +33,38 @@ in
       lsp-status-nvim
 
       # For completion
-      nvim-cmp
+      nvim-lspconfig
       cmp-nvim-lsp
-      cmp-path
       cmp-buffer
-      cmp-nvim-lsp      # LSP completion
-      cmp-buffer        # Buffer words
-      cmp-path          # File paths
-      cmp-cmdline       # Command line
-      luasnip
-      cmp_luasnip
-      
-      # icons
+      cmp-path
+      cmp-cmdline
+      nvim-cmp
+
+      cmp-vsnip
+      vim-vsnip
+      lspkind-nvim            # icons for LSP completion
+      nvim-web-devicons       # actual icon glyphs
       lspkind-nvim
 
       # End completion
 
+      rustaceanvim
+
       # Utils
-      popup-nvim
-      plenary-nvim
-      telescope-nvim
-      FTerm-nvim
+      plenary-nvim    # A buch of utils for Lua
+      telescope-nvim  # Fuzzy finder
+      FTerm-nvim      # Floating terminal
 
       # Package management
       packer-nvim
     ];
 
     extraConfig = vim-conf;
-    extraLuaConfig = lib.concatStringsSep "\n" (map builtins.readFile [./vim/rustaceanvim.lua ./vim/cmp.lua]);
+    extraLuaConfig = lib.concatStringsSep "\n" (map builtins.readFile [
+      ./vim/general.lua
+      ./vim/cmp.lua
+      ./vim/rustaceanvim.lua
+      ./vim/packer.lua
+    ]);
   };
 }

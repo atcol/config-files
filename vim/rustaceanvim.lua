@@ -1,10 +1,24 @@
+-- Configure rustaceanvim
 -- Set leader key first if not already set
 vim.g.mapleader = "\\"
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.offsetEncoding = { "utf-16" }
+
 vim.g.rustaceanvim = {
   server = {
+    capabilities = capabilities,
+    settings = {
+      ['rust-analyzer'] = {
+        completion = {
+          postfix = {
+            enable = false
+          }
+        }
+      }
+    },
     on_attach = function(client, bufnr)
-      vim.g.rustaceanvim.tools.code_actions.ui_select_fallback = true
+      -- vim.g.rustaceanvim.tools.code_actions.ui_select_fallback = true
 
       -- Code actions (supports rust-analyzer's grouping)
 
@@ -72,7 +86,7 @@ vim.g.rustaceanvim = {
       end, { silent = true, buffer = bufnr, desc = "Hover Actions" })
 
       -- Rename (Shift+F6 in IntelliJ)
-      vim.keymap.set("n", "<leader>rn", function()
+      vim.keymap.set("n", "<F2>", function()
         vim.lsp.buf.rename()
       end, { silent = true, buffer = bufnr, desc = "Rename" })
 
