@@ -15,7 +15,7 @@ jobs:
         nix-channel --update
         nix-shell '<home-manager>' -A install
         mkdir -p ~/.config/nixpkgs
-        rm -rf ${HOME}/.config/nixpkgs/home.nix
-        ln -s ${PWD}/home.nix ${HOME}/.config/nixpkgs/home.nix
+        cp -r ${PWD}/* ~/.config/nixpkgs/
         export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+        export PATH="$HOME/.nix-profile/bin:$PATH"
         home-manager switch
