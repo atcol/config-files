@@ -13,15 +13,6 @@ in
       "rustfmt"
       "rust-analyzer"
     ])
-    #cargo-watch
-    #cargo-edit
-    #cargo-tarpaulin
-    #cargo-audit
-    #cargo-outdated
-    #cargo-release
-    #cargo-udeps
-    #rustup
-#    clippy
 
     # General dev related tooling
     ollama
@@ -49,7 +40,7 @@ in
     qsv
     vscode
     claude-code
-    awscli
+    awscli2
     nodejs
     zed-editor
 
