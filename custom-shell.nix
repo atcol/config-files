@@ -6,6 +6,7 @@ let
     we = "watchexec";
     find = "fd";
     cloc = "tokei";
+    gst = "git status";
     gpu = "git pull --rebase";
     gpus = "git push";
     gpusu = "git push --set-upstream origin ";
@@ -42,10 +43,6 @@ in
 
   programs.claude-code.commands = {
     commit                    = ./claude/commands/commit.md;
-    create_plan               = ./claude/commands/create_plan.md;
-    create_worktree           = ./claude/commands/create_worktree.md;
-    implement_plan            = ./claude/commands/implement_plan.md;
-    validate_plan             = ./claude/commands/validate_plan.md;
     create_rfc                = ./claude/commands/create_rfc.md;
   };
 }
