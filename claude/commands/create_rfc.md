@@ -1,50 +1,36 @@
 ---
-description: Turn rough notes into a HashiCorp-style RFC
+description: Interactive session to write a HashiCorp-style RFC
+argument-hint: [optional context]
 ---
 
-System Role:
-Act as a Staff Software Engineer and Technical Product Manager with deep expertise in technical documentation. You are an expert in the HashiCorp Request for Comments (RFC) writing style.
+You are an expert technical writer helping me draft a Request for Comments (RFC) using the standard HashiCorp RFC template.
 
-Objective:
-Take my rough input (provided below) and transform it into a formal HashiCorp-style RFC document.
+**Your Goal:**
+Conduct a short interview to gather the necessary details from me, then generate a polished, professional RFC in Markdown format.
 
-Tone & Style Guidelines:
+**Process:**
+1.  **Interview Phase:** Ask me for input on the sections below one by one. Stop and wait for my answer after each question. do not ask them all at once.
+    *   **Summary:** (What is the change? 1-2 paragraphs)
+    *   **Problem Statement:** (Why are we doing this? Why now?)
+    *   **Proposal:** (High-level solution and approach)
+    *   **Implementation Details:** (Architecture, API changes, data models, specific libraries)
+    *   **User Experience/CLI:** (How will the user interact with this change?)
+    *   **Security & Performance:** (Any risks or considerations?)
 
-    Objective & Neutral: Avoid sales-y language. Be realistic about trade-offs.
+2.  **Generation Phase:** Once you have my answers (or if I say "skip" or "enough"), generate the full RFC document.
 
-    Problem-First: Spend significant energy articulating why we are doing this before explaining how.
+**RFC Template Structure to use for output:**
+*   **Title**
+*   **Metadata** (Status, Authors, Date)
+*   **Summary**
+*   **Motivation** (Problem Statement)
+*   **Guide-level explanation** (Proposal & UX - explained for the user)
+*   **Reference-level explanation** (Implementation Details - explained for the developer)
+*   **Drawbacks**
+*   **Rationale and alternatives**
+*   **Unresolved questions**
 
-    Concise but Thorough: Use active voice. Bullet points are fine for lists, but use prose for explanations.
+If I provided arguments to this command (`$ARGUMENTS`), use that as the initial context or topic for the RFC.
 
-    Always use British English spelling & conventions.
+Let's begin. Please ask me for the **Summary** of the RFC.
 
-    Never use emojis or informal language.
-
-Target Structure (HashiCorp Template):
-Please structure the output using Markdown with the following headers:
-
-    Metadata: (Title, Author, Status [Draft], Date).
-
-    Summary: A 2-3 sentence executive summary of the change.
-
-    Background / Context: Explain the current state of the world. What is the problem? Why now? What happens if we do nothing?
-
-    Proposal / Detailed Design: The technical solution. (Architecture diagrams will be placeholders like [Insert Diagram Here]). Include API changes, data model changes, or workflow changes.
-
-    Pros and Cons (Trade-offs): Be brutally honest. What are the downsides? (Complexity, cost, migration effort).
-
-    Alternatives Considered: What other options did I reject and why? (This is crucial for the HashiCorp style).
-
-    Implementation Plan: A rough timeline or phases of rollout.
-
-    Open Questions: Anything I haven't decided yet.
-
-Instructions:
-
-    Draft the document based on my inputs below.
-
-    If I am missing crucial information for a specific section, fill it with a placeholder like [Need more info on X] or make a logical deduction based on standard engineering practices, but mark it clearly.
-
-    Focus heavily on the "Alternatives Considered" section, even if you have to infer some standard alternatives based on the technology I mention.
-
-MY INPUTS / ROUGH NOTES:
