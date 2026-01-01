@@ -17,6 +17,8 @@ in
 
       # Languages
       #dhall-vim
+      nvim-treesitter
+      nvim-treesitter-parsers.smithy
       vim-nix
       haskell-vim
       ghcmod-vim
