@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   shellAliases = {
     k = "kubectl";
@@ -12,6 +12,66 @@ let
     gpusu = "git push --set-upstream origin ";
     gcom = "git commit ";
   };
+
+  # Convert Claude MD command to Gemini TOML format
+  # Handles both files with and without YAML frontmatter
+  claudeToGemini = name: defaultDesc: mdFile: pkgs.runCommand "${name}.toml" {
+    nativeBuildInputs = [ pkgs.gnused pkgs.gawk ];
+  } ''
+    content=$(cat ${mdFile})
+
+    # Check if file has YAML frontmatter (starts with ---)
+    if echo "$content" | head -1 | grep -q '^---$'; then
+      # Extract description from frontmatter
+      desc=$(echo "$content" | ${pkgs.gawk}/bin/awk '
+        /^---$/ { count++; next }
+        count == 1 && /^description:/ { gsub(/^description:[[:space:]]*/, ""); print; exit }
+      ')
+      # Extract body after second ---
+      body=$(echo "$content" | ${pkgs.gawk}/bin/awk '
+        /^---$/ { count++; next }
+        count >= 2 { print }
+      ')
+    else
+      # No frontmatter - use default description, entire file is body
+      desc="${defaultDesc}"
+      body="$content"
+    fi
+
+    # Replace $ARGUMENTS with {{args}}
+    body=$(echo "$body" | ${pkgs.gnused}/bin/sed 's/\$ARGUMENTS/{{args}}/g')
+
+    # Write TOML output
+    cat > $out <<TOML
+description = "$desc"
+prompt = """
+$body
+"""
+TOML
+  '';
+
+  # GitHub Copilot config for JetBrains IDEs
+  copilotXml = ''
+    <application>
+      <component name="github-copilot">
+        <languageAllowList>
+          <map>
+            <entry key="*" value="true" />
+            <entry key="yaml" value="false" />
+            <entry key="json" value="false" />
+          </map>
+        </languageAllowList>
+      </component>
+    </application>
+  '';
+
+  # Current JetBrains IDE versions (update when upgrading)
+  jetbrainsConfigs = [
+    "IntelliJIdea2025.3"
+    "PyCharm2025.3"
+    "WebStorm2025.3"
+    "RustRover2025.3"
+  ];
 in
 {
   programs.git = {
@@ -30,95 +90,37 @@ in
     '';
   };
 
-  programs.claude-code.enable = true;
+  # VS Code with GitHub Copilot
+  programs.vscode = {
+    enable = true;
 
-  programs.claude-code.agents = {
-    codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
-    codebase-locator        = ./claude/agents/codebase-locator.md;
-    codebase-pattern-finder = ./claude/agents/codebase-pattern-finder.md;
-    thoughts-analyzer       = ./claude/agents/thoughts-analyzer.md;
-    thoughts-locator        = ./claude/agents/thoughts-locator.md;
-    web-search-researcher   = ./claude/agents/web-search-researcher.md;
-  };
+    profiles.default.extensions = with pkgs.vscode-extensions; [
+      github.copilot
+      github.copilot-chat
+      vscodevim.vim
+    ];
 
-  programs.claude-code.commands = {
-    commit             = ./claude/commands/commit.md;
-    create-rfc         = ./claude/commands/create_rfc.md;
-    tdd                = ./claude/commands/tdd.md;
-  };
-
-  programs.claude-code.skills = {
-    generate-smithy   = ./claude/skills/generate-smithy;
-  };
-
-  programs.claude-code.settings = {
-    includeCoAuthoredBy = false;
-
-    permissions = {
-
-      allow = [
-        "Task"
-        "Bash(git diff:*)"
-        "Bash(git remote:*)"
-        "Bash(git pull:*)"
-        "Bash(git checkout:*)"
-        "Bash(gh:*)"
-        "Bash(pnpm:*)"
-        "Bash(npm:*)"
-        "Bash(yarn:*)"
-        "Bash(bun:*)"
-        "Bash(node:*)"
-        "Bash(python:*)"
-        "Bash(pip:*)"
-        "Bash(uv:*)"
-        "Bash(poetry:*)"
-        "Bash(docker:*)"
-        "Bash(cargo build:*)"
-        "Bash(cargo test:*)"
-        "Bash(find:*)"
-        "Bash(grep:*)"
-        "Bash(rg:*)"
-        "Bash(ls:*)"
-        "Bash(tree:*)"
-        "Bash(time:*)"
-        "Bash(timeout:*)"
-        "Bash(cat:*)"
-        "Bash(head:*)"
-        "Bash(tail:*)"
-        "Bash(cd:*)"
-        "Bash(diff:*)"
-        "Bash(sed:*)"
-        "Bash(cut:*)"
-        "Bash(awk:*)"
-        "Bash(sort:*)"
-        "Bash(uniq:*)"
-        "Bash(test:*)"
-        "Bash(wc:*)"
-        "Bash(which:*)"
-        "Bash(where:*)"
-        "Bash(whoami)"
-        "Bash(pwd)"
-        "Bash(echo:*)"
-        "Bash(printf:*)"
-        "Bash(true)"
-        "Bash(nix:*)"
-        "Glob"
-        "Grep"
-        "Read"
-        "Edit"
-        "Write"
-        "TodoWrite"
-        "WebFetch"
-        "WebSearch"
-        "WebFetch(domain:github.com)"
-        "WebFetch(domain:api.github.com)"
-        "WebFetch(domain:raw.githubusercontent.com)"
-        "WebFetch(domain:registry.npmjs.org)"
-        "Bash(git diff:*)"
-        "Edit"
-      ];
-
+    userSettings = {
+      "github.copilot.enable" = {
+        "*" = true;
+        "yaml" = false;
+        "dotenv" = false;
+      };
+      "github.copilot.editor.enableCodeActions" = true;
     };
+  };
 
+  # JetBrains Copilot config files
+  home.file = builtins.listToAttrs (map (ide: {
+    name = ".config/JetBrains/${ide}/options/github-copilot.xml";
+    value = { text = copilotXml; };
+  }) jetbrainsConfigs) // {
+    # Gemini CLI commands (generated from Claude command source files)
+    ".gemini/commands/commit.toml".source =
+      claudeToGemini "commit" "Create git commits for changes made during this session" ./claude/commands/commit.md;
+    ".gemini/commands/create-rfc.toml".source =
+      claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./claude/commands/create_rfc.md;
+    ".gemini/commands/tdd.toml".source =
+      claudeToGemini "tdd" "Test-driven development workflow" ./claude/commands/tdd.md;
   };
 }

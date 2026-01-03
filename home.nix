@@ -1,11 +1,10 @@
 { config, pkgs, ... }:
 let 
-  # 0.7
-  #neovim-overlay-commit = "184a46c1fc32d0b3c1a5aaad26249f1a970e4d3c";
 
-  imports = [ 
+  imports = [
     ./packages.nix
     ./custom-shell.nix
+    ./claude-code.nix
     ./starship.nix
     ./neovim.nix
     ./tmux.nix

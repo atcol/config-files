@@ -57,6 +57,9 @@ in
       telescope-nvim  # Fuzzy finder
       FTerm-nvim      # Floating terminal
 
+      # AI
+      copilot-vim
+
       # Package management
       packer-nvim
     ];

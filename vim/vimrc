@@ -113,3 +113,14 @@ nnoremap <C-J> :bprev<CR>
 
 command! Bd bp | sp | bn | bd
 nnoremap <C-C> :Bd<CR>
+
+" GitHub Copilot settings
+let g:copilot_no_tab_map = v:true
+let g:copilot_filetypes = {
+    \ '*': v:true,
+    \ 'yaml': v:false,
+    \ 'markdown': v:false,
+    \ }
+
+" Ctrl+Y to accept Copilot suggestion (C-J already used for buffer navigation)
+imap <silent><script><expr> <C-Y> copilot#Accept("\<CR>")

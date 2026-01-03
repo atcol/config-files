@@ -38,11 +38,17 @@ in
     devenv
     jujutsu
     qsv
-    vscode
     claude-code
+    gemini-cli
     awscli2
     nodejs
     zed-editor
+
+    # JetBrains IDEs
+    jetbrains.idea-ultimate
+    jetbrains.pycharm-professional
+    jetbrains.webstorm
+    jetbrains.rust-rover
 
     # Shell & environment
     niv
