@@ -40,6 +40,7 @@ in
     qsv
     claude-code
     gemini-cli
+    github-copilot-cli
     awscli2
     nodejs
     zed-editor

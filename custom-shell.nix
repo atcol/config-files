@@ -50,6 +50,47 @@ $body
 TOML
   '';
 
+  # Convert Claude MD command to GitHub Copilot CLI agent format
+  # Copilot agents are Markdown with YAML frontmatter: name, description, tools
+  claudeToCopilotAgent = name: defaultDesc: mdFile: pkgs.runCommand "${name}.md" {
+    nativeBuildInputs = [ pkgs.gnused pkgs.gawk ];
+  } ''
+    content=$(cat ${mdFile})
+
+    # Check if file has YAML frontmatter (starts with ---)
+    if echo "$content" | head -1 | grep -q '^---$'; then
+      # Extract description from frontmatter
+      desc=$(echo "$content" | ${pkgs.gawk}/bin/awk '
+        /^---$/ { count++; next }
+        count == 1 && /^description:/ { gsub(/^description:[[:space:]]*/, ""); print; exit }
+      ')
+      # Extract body after second ---
+      body=$(echo "$content" | ${pkgs.gawk}/bin/awk '
+        /^---$/ { count++; next }
+        count >= 2 { print }
+      ')
+    else
+      # No frontmatter - use default description, entire file is body
+      desc="${defaultDesc}"
+      body="$content"
+    fi
+
+    # Use default if description is empty
+    if [ -z "$desc" ]; then
+      desc="${defaultDesc}"
+    fi
+
+    # Write Copilot agent Markdown with new frontmatter
+    cat > $out <<AGENT
+---
+name: ${name}
+description: $desc
+tools: ["execute", "read", "edit", "search"]
+---
+$body
+AGENT
+  '';
+
   # GitHub Copilot config for JetBrains IDEs
   copilotXml = ''
     <application>
@@ -122,5 +163,13 @@ in
       claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./claude/commands/create_rfc.md;
     ".gemini/commands/tdd.toml".source =
       claudeToGemini "tdd" "Test-driven development workflow" ./claude/commands/tdd.md;
+
+    # GitHub Copilot CLI agents (generated from Claude command source files)
+    ".copilot/agents/commit.md".source =
+      claudeToCopilotAgent "commit" "Create git commits for changes made during this session" ./claude/commands/commit.md;
+    ".copilot/agents/create-rfc.md".source =
+      claudeToCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./claude/commands/create_rfc.md;
+    ".copilot/agents/tdd.md".source =
+      claudeToCopilotAgent "tdd" "Test-driven development workflow" ./claude/commands/tdd.md;
   };
 }
