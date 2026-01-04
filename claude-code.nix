@@ -12,9 +12,9 @@
   };
 
   programs.claude-code.commands = {
-    commit             = ./claude/commands/commit.md;
-    create-rfc         = ./claude/commands/create_rfc.md;
-    tdd                = ./claude/commands/tdd.md;
+    commit             = ./ai/commands/commit.md;
+    create-rfc         = ./ai/commands/create_rfc.md;
+    tdd                = ./ai/commands/tdd.md;
   };
 
   programs.claude-code.skills = {

@@ -156,20 +156,20 @@ in
     name = ".config/JetBrains/${ide}/options/github-copilot.xml";
     value = { text = copilotXml; };
   }) jetbrainsConfigs) // {
-    # Gemini CLI commands (generated from Claude command source files)
+    # Gemini CLI commands (generated from shared AI command sources)
     ".gemini/commands/commit.toml".source =
-      claudeToGemini "commit" "Create git commits for changes made during this session" ./claude/commands/commit.md;
+      claudeToGemini "commit" "Create git commits for changes made during this session" ./ai/commands/commit.md;
     ".gemini/commands/create-rfc.toml".source =
-      claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./claude/commands/create_rfc.md;
+      claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".gemini/commands/tdd.toml".source =
-      claudeToGemini "tdd" "Test-driven development workflow" ./claude/commands/tdd.md;
+      claudeToGemini "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
 
-    # GitHub Copilot CLI agents (generated from Claude command source files)
+    # GitHub Copilot CLI agents (generated from shared AI command sources)
     ".copilot/agents/commit.md".source =
-      claudeToCopilotAgent "commit" "Create git commits for changes made during this session" ./claude/commands/commit.md;
+      claudeToCopilotAgent "commit" "Create git commits for changes made during this session" ./ai/commands/commit.md;
     ".copilot/agents/create-rfc.md".source =
-      claudeToCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./claude/commands/create_rfc.md;
+      claudeToCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".copilot/agents/tdd.md".source =
-      claudeToCopilotAgent "tdd" "Test-driven development workflow" ./claude/commands/tdd.md;
+      claudeToCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
   };
 }
