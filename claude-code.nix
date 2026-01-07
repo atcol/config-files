@@ -1,6 +1,23 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  # Skills that need to be copied (not symlinked) for Claude to read assets
+  skillsToCopy = {
+    generate-smithy = ./claude/skills/generate-smithy;
+    bootstrap-rust = ./claude/skills/bootstrap-rust;
+  };
+in
 {
   programs.claude-code.enable = true;
+
+  # Copy skills with assets (Claude can't read symlinked files)
+  home.activation.copyClaudeSkills = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p $HOME/.claude/skills
+    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
+      rm -rf $HOME/.claude/skills/${name}
+      cp -rL ${path} $HOME/.claude/skills/${name}
+      chmod -R u+w $HOME/.claude/skills/${name}
+    '') skillsToCopy)}
+  '';
 
   programs.claude-code.agents = {
     codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
@@ -17,9 +34,9 @@
     tdd                = ./ai/commands/tdd.md;
   };
 
-  programs.claude-code.skills = {
-    generate-smithy   = ./claude/skills/generate-smithy;
-  };
+  # Skills are copied via home.activation.copyClaudeSkills above
+  # (Claude can't read symlinked files, so we copy instead)
+  programs.claude-code.skills = {};
 
   programs.claude-code.settings = {
     includeCoAuthoredBy = false;

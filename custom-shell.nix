@@ -50,46 +50,43 @@ $body
 TOML
   '';
 
-  # Convert Claude MD command to GitHub Copilot CLI agent format
+  # Convert AI command MD to GitHub Copilot CLI agent format (pure Nix, creates real files)
   # Copilot agents are Markdown with YAML frontmatter: name, description, tools
-  claudeToCopilotAgent = name: defaultDesc: mdFile: pkgs.runCommand "${name}.md" {
-    nativeBuildInputs = [ pkgs.gnused pkgs.gawk ];
-  } ''
-    content=$(cat ${mdFile})
+  mkCopilotAgent = name: defaultDesc: mdFile:
+    let
+      content = builtins.readFile mdFile;
+      lines = lib.splitString "\n" content;
+      hasFrontmatter = (builtins.head lines) == "---";
 
-    # Check if file has YAML frontmatter (starts with ---)
-    if echo "$content" | head -1 | grep -q '^---$'; then
-      # Extract description from frontmatter
-      desc=$(echo "$content" | ${pkgs.gawk}/bin/awk '
-        /^---$/ { count++; next }
-        count == 1 && /^description:/ { gsub(/^description:[[:space:]]*/, ""); print; exit }
-      ')
-      # Extract body after second ---
-      body=$(echo "$content" | ${pkgs.gawk}/bin/awk '
-        /^---$/ { count++; next }
-        count >= 2 { print }
-      ')
-    else
-      # No frontmatter - use default description, entire file is body
-      desc="${defaultDesc}"
-      body="$content"
-    fi
+      # Parse frontmatter if present
+      parsed = if hasFrontmatter then
+        let
+          # Find second --- index
+          restLines = builtins.tail lines;
+          findEnd = idx: lines:
+            if lines == [] then idx
+            else if (builtins.head lines) == "---" then idx
+            else findEnd (idx + 1) (builtins.tail lines);
+          endIdx = findEnd 0 restLines;
+          frontmatterLines = lib.take endIdx restLines;
+          bodyLines = lib.drop (endIdx + 1) restLines;
 
-    # Use default if description is empty
-    if [ -z "$desc" ]; then
-      desc="${defaultDesc}"
-    fi
-
-    # Write Copilot agent Markdown with new frontmatter
-    cat > $out <<AGENT
----
-name: ${name}
-description: $desc
-tools: ["execute", "read", "edit", "search"]
----
-$body
-AGENT
-  '';
+          # Extract description from frontmatter
+          descLine = lib.findFirst (l: lib.hasPrefix "description:" l) null frontmatterLines;
+          desc = if descLine != null
+            then lib.removePrefix "description:" (lib.removePrefix "description: " descLine)
+            else defaultDesc;
+        in { inherit desc; body = lib.concatStringsSep "\n" bodyLines; }
+      else
+        { desc = defaultDesc; body = content; };
+    in ''
+      ---
+      name: ${name}
+      description: ${parsed.desc}
+      tools: ["execute", "read", "edit", "search"]
+      ---
+      ${parsed.body}
+    '';
 
   # GitHub Copilot config for JetBrains IDEs
   copilotXml = ''
@@ -165,11 +162,11 @@ in
       claudeToGemini "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
 
     # GitHub Copilot CLI agents (generated from shared AI command sources)
-    ".copilot/agents/commit.md".source =
-      claudeToCopilotAgent "commit" "Create git commits for changes made during this session" ./ai/commands/commit.md;
-    ".copilot/agents/create-rfc.md".source =
-      claudeToCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
-    ".copilot/agents/tdd.md".source =
-      claudeToCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
+    ".copilot/agents/commit.md".text =
+      mkCopilotAgent "commit" "Create git commits for changes made during this session" ./ai/commands/commit.md;
+    ".copilot/agents/create-rfc.md".text =
+      mkCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
+    ".copilot/agents/tdd.md".text =
+      mkCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
   };
 }
