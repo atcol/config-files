@@ -34,8 +34,14 @@ let
       ')
     else
       # No frontmatter - use default description, entire file is body
-      desc="${defaultDesc}"
+      desc=""
       body="$content"
+    fi
+
+    # Use default if description is empty or whitespace-only
+    desc=$(echo "$desc" | xargs)  # trim whitespace
+    if [ -z "$desc" ]; then
+      desc="${defaultDesc}"
     fi
 
     # Replace $ARGUMENTS with {{args}}
@@ -73,9 +79,11 @@ TOML
 
           # Extract description from frontmatter
           descLine = lib.findFirst (l: lib.hasPrefix "description:" l) null frontmatterLines;
-          desc = if descLine != null
-            then lib.removePrefix "description:" (lib.removePrefix "description: " descLine)
-            else defaultDesc;
+          rawDesc = if descLine != null
+            then lib.trim (lib.removePrefix "description:" descLine)
+            else "";
+          # Use default if description is empty or whitespace-only
+          desc = if rawDesc == "" then defaultDesc else rawDesc;
         in { inherit desc; body = lib.concatStringsSep "\n" bodyLines; }
       else
         { desc = defaultDesc; body = content; };
@@ -162,11 +170,27 @@ in
       claudeToGemini "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
 
     # GitHub Copilot CLI agents (generated from shared AI command sources)
-    ".copilot/agents/commit.md".text =
+    ".copilot/agents/commit.agent.md".text =
       mkCopilotAgent "commit" "Create git commits for changes made during this session" ./ai/commands/commit.md;
-    ".copilot/agents/create-rfc.md".text =
+    ".copilot/agents/create-rfc.agent.md".text =
       mkCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
-    ".copilot/agents/tdd.md".text =
+    ".copilot/agents/tdd.agent.md".text =
       mkCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
   };
+
+  # Copy Copilot agents to real files (Copilot CLI can't read symlinks)
+  home.activation.copyCopilotAgents = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p $HOME/.copilot/agents
+
+    # Generate and copy agent files (follow symlinks from home.file)
+    for agent in commit create-rfc tdd; do
+      src="$HOME/.copilot/agents/$agent.agent.md"
+      if [ -L "$src" ]; then
+        # Follow symlink and copy content
+        cp -L "$src" "$src.tmp"
+        rm "$src"
+        mv "$src.tmp" "$src"
+      fi
+    done
+  '';
 }
