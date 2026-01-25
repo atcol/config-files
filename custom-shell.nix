@@ -184,7 +184,7 @@ in
     ".gemini/commands/create-rfc.toml".source =
       claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".gemini/commands/tdd.toml".source =
-      claudeToGemini "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
+      claudeToGemini "tdd" "Test-driven development workflow" ./ai/skills/tdd/SKILL.md;
 
     # GitHub Copilot CLI agents (generated from shared AI command sources)
     ".copilot/agents/commit.agent.md".text =
@@ -192,7 +192,7 @@ in
     ".copilot/agents/create-rfc.agent.md".text =
       mkCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".copilot/agents/tdd.agent.md".text =
-      mkCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
+      mkCopilotAgent "tdd" "Test-driven development workflow" ./ai/skills/tdd/SKILL.md;
 
     # GitHub Copilot CLI MCP servers (shared with Claude Code via mcp-servers.nix)
     ".copilot/mcp-config.json".text = copilotMcpConfig;
