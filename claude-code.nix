@@ -1,9 +1,14 @@
 { config, pkgs, lib, ... }:
 let
+  # Shared MCP server definitions (also used by Copilot CLI)
+  mcpServers = import ./mcp-servers.nix;
+
   # Skills that need to be copied (not symlinked) for Claude to read assets
   skillsToCopy = {
     generate-smithy = ./claude/skills/generate-smithy;
-    bootstrap-rust = ./claude/skills/bootstrap-rust;
+    api-to-proto    = ./claude/skills/api-to-proto;
+    bootstrap-rust  = ./claude/skills/bootstrap-rust;
+    tdd             = ./claude/skills/tdd;
   };
 in
 {
@@ -31,7 +36,6 @@ in
   programs.claude-code.commands = {
     commit             = ./ai/commands/commit.md;
     create-rfc         = ./ai/commands/create_rfc.md;
-    tdd                = ./ai/commands/tdd.md;
   };
 
   # Skills are copied via home.activation.copyClaudeSkills above
@@ -40,6 +44,9 @@ in
 
   programs.claude-code.settings = {
     includeCoAuthoredBy = false;
+
+    # MCP Servers - imported from shared mcp-servers.nix
+    inherit mcpServers;
 
     permissions = {
 
@@ -62,6 +69,7 @@ in
         "Bash(docker:*)"
         "Bash(cargo build:*)"
         "Bash(cargo test:*)"
+        "Bash(curl:*)"
         "Bash(find:*)"
         "Bash(grep:*)"
         "Bash(rg:*)"

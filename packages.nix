@@ -43,7 +43,7 @@ in
     github-copilot-cli
     awscli2
     nodejs
-    zed-editor
+    #zed-editor
 
     # JetBrains IDEs
     jetbrains.idea-ultimate

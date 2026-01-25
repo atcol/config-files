@@ -1,5 +1,22 @@
 { config, pkgs, lib, ... }:
 let
+  # Shared MCP server definitions (also used by Claude Code)
+  mcpServers = import ./mcp-servers.nix;
+
+  # Convert shared MCP servers to Copilot CLI format
+  # Copilot uses "type": "local" for stdio servers and requires "tools" field
+  copilotMcpServers = lib.mapAttrs (name: server:
+    if server ? type && server.type == "sse" then
+      # SSE servers pass through as-is with tools
+      server // { tools = ["*"]; }
+    else
+      # Stdio servers need type: "local"
+      server // { type = "local"; tools = ["*"]; }
+  ) mcpServers;
+
+  # Generate Copilot mcp-config.json content
+  copilotMcpConfig = builtins.toJSON { mcpServers = copilotMcpServers; };
+
   shellAliases = {
     k = "kubectl";
     cat = "bat";
@@ -176,21 +193,31 @@ in
       mkCopilotAgent "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".copilot/agents/tdd.agent.md".text =
       mkCopilotAgent "tdd" "Test-driven development workflow" ./ai/commands/tdd.md;
+
+    # GitHub Copilot CLI MCP servers (shared with Claude Code via mcp-servers.nix)
+    ".copilot/mcp-config.json".text = copilotMcpConfig;
   };
 
-  # Copy Copilot agents to real files (Copilot CLI can't read symlinks)
-  home.activation.copyCopilotAgents = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  # Copy Copilot files to real files (Copilot CLI can't read symlinks)
+  home.activation.copyCopilotFiles = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.copilot/agents
 
-    # Generate and copy agent files (follow symlinks from home.file)
+    # Convert symlinked agent files to real files
     for agent in commit create-rfc tdd; do
       src="$HOME/.copilot/agents/$agent.agent.md"
       if [ -L "$src" ]; then
-        # Follow symlink and copy content
         cp -L "$src" "$src.tmp"
         rm "$src"
         mv "$src.tmp" "$src"
       fi
     done
+
+    # Convert symlinked mcp-config.json to real file
+    mcp="$HOME/.copilot/mcp-config.json"
+    if [ -L "$mcp" ]; then
+      cp -L "$mcp" "$mcp.tmp"
+      rm "$mcp"
+      mv "$mcp.tmp" "$mcp"
+    fi
   '';
 }
