@@ -42,11 +42,24 @@ in
   # (Claude can't read symlinked files, so we copy instead)
   programs.claude-code.skills = {};
 
+  # MCP servers go in ~/.claude.json (not settings.json)
+  # Use activation script to merge (not overwrite) since Claude stores state in this file
+  home.activation.mergeClaudeMcpServers = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    CLAUDE_JSON="$HOME/.claude.json"
+    MCP_SERVERS='${builtins.toJSON mcpServers}'
+
+    if [ -f "$CLAUDE_JSON" ]; then
+      # Merge mcpServers into existing file
+      ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CLAUDE_JSON" > "$CLAUDE_JSON.tmp"
+      mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
+    else
+      # Create new file with just mcpServers
+      echo "{\"mcpServers\": $MCP_SERVERS}" > "$CLAUDE_JSON"
+    fi
+  '';
+
   programs.claude-code.settings = {
     includeCoAuthoredBy = false;
-
-    # MCP Servers - imported from shared mcp-servers.nix
-    inherit mcpServers;
 
     permissions = {
 
