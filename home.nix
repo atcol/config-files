@@ -5,6 +5,7 @@ let
     ./packages.nix
     ./custom-shell.nix
     ./claude-code.nix
+    ./codex.nix
     ./starship.nix
     ./neovim.nix
     ./tmux.nix

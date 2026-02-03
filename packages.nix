@@ -21,6 +21,8 @@ in
     valgrind
     git
     gitui
+    gh
+    codex
     watchexec
     ripgrep
     tokei
