@@ -25,12 +25,12 @@ in
   '';
 
   programs.claude-code.agents = {
-    codebase-analyzer       = ./claude/agents/codebase-analyzer.md;
-    codebase-locator        = ./claude/agents/codebase-locator.md;
-    codebase-pattern-finder = ./claude/agents/codebase-pattern-finder.md;
-    thoughts-analyzer       = ./claude/agents/thoughts-analyzer.md;
-    thoughts-locator        = ./claude/agents/thoughts-locator.md;
-    web-search-researcher   = ./claude/agents/web-search-researcher.md;
+    codebase-analyzer       = ./ai/agents/codebase-analyzer.md;
+    codebase-locator        = ./ai/agents/codebase-locator.md;
+    codebase-pattern-finder = ./ai/agents/codebase-pattern-finder.md;
+    thoughts-analyzer       = ./ai/agents/thoughts-analyzer.md;
+    thoughts-locator        = ./ai/agents/thoughts-locator.md;
+    web-search-researcher   = ./ai/agents/web-search-researcher.md;
   };
 
   programs.claude-code.commands = {

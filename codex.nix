@@ -11,6 +11,22 @@ let
     tdd             = ./ai/skills/tdd;
   };
 
+  # Agents (shared with Claude Code)
+  agentsToCopy = {
+    codebase-analyzer       = ./ai/agents/codebase-analyzer.md;
+    codebase-locator        = ./ai/agents/codebase-locator.md;
+    codebase-pattern-finder = ./ai/agents/codebase-pattern-finder.md;
+    thoughts-analyzer       = ./ai/agents/thoughts-analyzer.md;
+    thoughts-locator        = ./ai/agents/thoughts-locator.md;
+    web-search-researcher   = ./ai/agents/web-search-researcher.md;
+  };
+
+  # Commands (shared with Claude Code)
+  commandsToCopy = {
+    commit     = ./ai/commands/commit.md;
+    create-rfc = ./ai/commands/create_rfc.md;
+  };
+
   # Convert MCP servers from our shared format to Codex TOML format
   # Codex uses:
   #   - stdio: command, args, env (as sub-table)
@@ -59,7 +75,7 @@ in
   # Create Codex config directory
   home.file.".codex/.keep".text = "";
 
-  # Copy skills to ~/.codex/skills/ (Codex can read SKILL.md format directly)
+  # Copy skills to ~/.codex/skills/
   home.activation.copyCodexSkills = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.codex/skills
     ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
@@ -67,6 +83,26 @@ in
       cp -rL ${path} $HOME/.codex/skills/${name}
       chmod -R u+w $HOME/.codex/skills/${name}
     '') skillsToCopy)}
+  '';
+
+  # Copy agents to ~/.codex/agents/
+  home.activation.copyCodexAgents = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p $HOME/.codex/agents
+    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
+      rm -f $HOME/.codex/agents/${name}.md
+      cp -L ${path} $HOME/.codex/agents/${name}.md
+      chmod u+w $HOME/.codex/agents/${name}.md
+    '') agentsToCopy)}
+  '';
+
+  # Copy commands to ~/.codex/commands/
+  home.activation.copyCodexCommands = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p $HOME/.codex/commands
+    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
+      rm -f $HOME/.codex/commands/${name}.md
+      cp -L ${path} $HOME/.codex/commands/${name}.md
+      chmod u+w $HOME/.codex/commands/${name}.md
+    '') commandsToCopy)}
   '';
 
   # Generate Codex config.toml
