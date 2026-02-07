@@ -73,13 +73,12 @@ in
     '';
   };
 
-  programs.vscode = {
+  programs.direnv = {
     enable = true;
-
-    profiles.default.extensions = with pkgs.vscode-extensions; [
-      vscodevim.vim
-    ];
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
   };
+
 
   home.file = {
     # Gemini CLI commands (generated from shared AI command sources)
