@@ -9,7 +9,10 @@ let
     api-to-proto       = ./ai/skills/api-to-proto;
     bootstrap-rust     = ./ai/skills/bootstrap-rust;
     tdd                = ./ai/skills/tdd;
-    epic-decomposition = ./ai/skills/epic-decomposition;
+    epic-decomposition     = ./ai/skills/epic-decomposition;
+    adversarial-code-review = ./ai/skills/adversarial-code-review;
+    adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
+    adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
   };
 in
 {

@@ -90,5 +90,11 @@ in
       claudeToGemini "tdd" "Test-driven development workflow" ./ai/skills/tdd/SKILL.md;
     ".gemini/commands/epic-decomposer.toml".source =
       claudeToGemini "epic-decomposer" "Decompose epics into well-structured stories for any project management tool" ./ai/skills/epic-decomposition/SKILL.md;
+    ".gemini/commands/adversarial-code-review.toml".source =
+      claudeToGemini "adversarial-code-review" "Adversarial code review — blunt, thorough critique of code or PRs" ./ai/skills/adversarial-code-review/SKILL.md;
+    ".gemini/commands/adversarial-prd-review.toml".source =
+      claudeToGemini "adversarial-prd-review" "Adversarial review of PRDs and product specs" ./ai/skills/adversarial-prd-review/SKILL.md;
+    ".gemini/commands/adversarial-rfc-review.toml".source =
+      claudeToGemini "adversarial-rfc-review" "Adversarial review of RFCs and technical design documents" ./ai/skills/adversarial-rfc-review/SKILL.md;
   };
 }
