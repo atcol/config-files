@@ -88,5 +88,7 @@ in
       claudeToGemini "create-rfc" "Interactive session to write a HashiCorp-style RFC" ./ai/commands/create_rfc.md;
     ".gemini/commands/tdd.toml".source =
       claudeToGemini "tdd" "Test-driven development workflow" ./ai/skills/tdd/SKILL.md;
+    ".gemini/commands/epic-decomposer.toml".source =
+      claudeToGemini "epic-decomposer" "Decompose epics into well-structured stories for any project management tool" ./ai/skills/epic-decomposition/SKILL.md;
   };
 }

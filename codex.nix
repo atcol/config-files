@@ -5,10 +5,11 @@ let
 
   # Skills that need to be copied (same as Claude Code)
   skillsToCopy = {
-    generate-smithy = ./ai/skills/generate-smithy;
-    api-to-proto    = ./ai/skills/api-to-proto;
-    bootstrap-rust  = ./ai/skills/bootstrap-rust;
-    tdd             = ./ai/skills/tdd;
+    generate-smithy    = ./ai/skills/generate-smithy;
+    api-to-proto       = ./ai/skills/api-to-proto;
+    bootstrap-rust     = ./ai/skills/bootstrap-rust;
+    tdd                = ./ai/skills/tdd;
+    epic-decomposition = ./ai/skills/epic-decomposition;
   };
 
   # Agents (shared with Claude Code)

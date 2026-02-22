@@ -5,10 +5,11 @@ let
 
   # Skills that need to be copied (not symlinked) for Claude to read assets
   skillsToCopy = {
-    generate-smithy = ./ai/skills/generate-smithy;
-    api-to-proto    = ./ai/skills/api-to-proto;
-    bootstrap-rust  = ./ai/skills/bootstrap-rust;
-    tdd             = ./ai/skills/tdd;
+    generate-smithy    = ./ai/skills/generate-smithy;
+    api-to-proto       = ./ai/skills/api-to-proto;
+    bootstrap-rust     = ./ai/skills/bootstrap-rust;
+    tdd                = ./ai/skills/tdd;
+    epic-decomposition = ./ai/skills/epic-decomposition;
   };
 in
 {
