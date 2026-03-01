@@ -238,6 +238,7 @@ use flake
 
 Append to `.gitignore` (create if needed):
 ```
+build/
 .direnv
 ```
 
@@ -280,6 +281,70 @@ Append to `.gitignore` (create if needed):
     { "name": "debug", "configurePreset": "debug" },
     { "name": "release", "configurePreset": "release" }
   ]
+}
+```
+
+### `CMakeLists.txt` (if no existing CMakeLists.txt in the project root)
+
+Only generate this for new/greenfield projects. If the user already has a
+`CMakeLists.txt`, skip this file entirely.
+
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project({{PROJECT_NAME}} LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD {{CXX_STANDARD}})
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+{{FIND_PACKAGES}}
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+{{TARGET_LINK_LIBRARIES}}
+```
+
+**FIND_PACKAGES** — One `find_package()` per requested library. Example:
+```cmake
+find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(fmt REQUIRED)
+```
+
+**TARGET_LINK_LIBRARIES** — Link all found packages. Example:
+```cmake
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+    Boost::boost
+    Eigen3::Eigen
+    fmt::fmt
+)
+```
+
+If no libraries were requested, omit both `find_package` and
+`target_link_libraries` sections entirely.
+
+### `src/main.cpp` (if no existing source files in the project)
+
+Only generate this alongside a new `CMakeLists.txt`. Keeps it minimal:
+
+```cpp
+#include <iostream>
+
+int main() {
+    std::cout << "Hello from {{PROJECT_NAME}}!\n";
+    return 0;
+}
+```
+
+If the user requested specific libraries, include a trivial usage example
+instead. For instance, with fmt:
+
+```cpp
+#include <fmt/core.h>
+
+int main() {
+    fmt::println("Hello from {{PROJECT_NAME}}!");
+    return 0;
 }
 ```
 
