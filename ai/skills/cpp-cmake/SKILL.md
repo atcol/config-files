@@ -147,7 +147,8 @@ Example:
 
 If clang-format/clang-tidy requested (common):
 ```nix
-          clang-tools     # clang-format, clang-tidy, and more
+          clang-tools             # clang-format, clang-tidy, and more
+          cmake-language-server   # LSP for CMakeLists.txt
 ```
 
 Other optional tools based on user needs:

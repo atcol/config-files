@@ -19,6 +19,9 @@ in
       #dhall-vim
       nvim-treesitter
       nvim-treesitter-parsers.smithy
+      nvim-treesitter-parsers.c
+      nvim-treesitter-parsers.cpp
+      nvim-treesitter-parsers.cmake
       vim-nix
       haskell-vim
       ghcmod-vim
@@ -66,6 +69,7 @@ in
       ./vim/general.lua
       ./vim/cmp.lua
       ./vim/rustaceanvim.lua
+      ./vim/cpp.lua
       ./vim/packer.lua
     ]);
   };
