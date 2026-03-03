@@ -6,7 +6,6 @@ let
     ./custom-shell.nix
     ./claude-code.nix
     ./codex.nix
-    ./peon-ping.nix
     ./starship.nix
     ./neovim.nix
     ./tmux.nix

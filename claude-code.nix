@@ -8,6 +8,7 @@ let
     generate-smithy    = ./ai/skills/generate-smithy;
     api-to-proto       = ./ai/skills/api-to-proto;
     bootstrap-rust     = ./ai/skills/bootstrap-rust;
+    cpp-cmake          = ./ai/skills/cpp-cmake;
     tdd                = ./ai/skills/tdd;
     epic-decomposition     = ./ai/skills/epic-decomposition;
     adversarial-code-review = ./ai/skills/adversarial-code-review;
