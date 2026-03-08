@@ -10,7 +10,7 @@ let
       owner = "krakenfx";
       repo = "kraken-cli";
       rev = "v${version}";
-      hash = lib.fakeHash;
+      hash = "sha256-wydljzyU710aCdQFVk0cjulDhcSm/DtwfESfnPkqsok=";
     };
 
     cargoHash = lib.fakeHash;
