@@ -13,7 +13,7 @@ let
       hash = "sha256-wydljzyU710aCdQFVk0cjulDhcSm/DtwfESfnPkqsok=";
     };
 
-    cargoHash = lib.fakeHash;
+    cargoHash = "sha256-sHEcC4qUOymm6GjJumtdbpPsIfC/ZzGLhDw7zggDzz4=";
 
     nativeBuildInputs = with pkgs; [ pkg-config ];
     buildInputs = with pkgs; [ openssl ];
