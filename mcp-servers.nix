@@ -8,6 +8,8 @@
 #   SLACK_BOT_TOKEN              - Slack bot token (xoxb-...)
 #   SLACK_TEAM_ID                - Slack team ID (T...)
 #   SUPABASE_ACCESS_TOKEN        - Supabase PAT (https://supabase.com/dashboard/account/tokens)
+#   KRAKEN_API_KEY               - Kraken API key
+#   KRAKEN_API_SECRET            - Kraken API secret
 {
   # GitHub - repos, issues, PRs, code search
   github = {
@@ -40,5 +42,15 @@
   supabase = {
     command = "npx";
     args = ["-y" "@supabase/mcp-server-supabase@latest" "--access-token" "\${SUPABASE_ACCESS_TOKEN}"];
+  };
+
+  # Kraken - crypto trading, market data, account management
+  kraken = {
+    command = "kraken";
+    args = ["mcp" "-s" "market,account,futures,trade"];
+    env = {
+      KRAKEN_API_KEY = "\${KRAKEN_API_KEY}";
+      KRAKEN_API_SECRET = "\${KRAKEN_API_SECRET}";
+    };
   };
 }
