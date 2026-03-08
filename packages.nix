@@ -1,7 +1,30 @@
 { config, lib, pkgs, ... }:
 let
   fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz") {};
-in 
+
+  kraken-cli = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "kraken-cli";
+    version = "0.1.0";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "krakenfx";
+      repo = "kraken-cli";
+      rev = "v${version}";
+      hash = "sha256-wydljzyU710aCdQFVk0cjulDhcSm/DtwfESfnPkqsok=";
+    };
+
+    cargoHash = "sha256-sHEcC4qUOymm6GjJumtdbpPsIfC/ZzGLhDw7zggDzz4=";
+
+    nativeBuildInputs = with pkgs; [ pkg-config ];
+    buildInputs = with pkgs; [ openssl ];
+
+    meta = with lib; {
+      description = "Kraken CLI";
+      homepage = "https://github.com/krakenfx/kraken-cli";
+      license = licenses.mit;
+    };
+  };
+in
 {
   home.packages = with pkgs; [
     # Rust related
@@ -42,6 +65,7 @@ in
     qsv
     claude-code
     gemini-cli
+    kraken-cli
     awscli2
     nodejs
     #zed-editor
