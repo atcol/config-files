@@ -13,9 +13,10 @@ jobs:
     - run: |
         nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
         nix-channel --update
+        export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
         nix-shell '<home-manager>' -A install
         mkdir -p ~/.config/nixpkgs
         rm -rf ${HOME}/.config/nixpkgs/home.nix
         ln -s ${PWD}/home.nix ${HOME}/.config/nixpkgs/home.nix
-        export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+        export PATH=$HOME/.nix-profile/bin:$PATH
         home-manager switch
