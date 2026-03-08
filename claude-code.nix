@@ -14,6 +14,7 @@ let
     adversarial-code-review = ./ai/skills/adversarial-code-review;
     adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
+    worktrunk               = ./ai/skills/worktrunk;
   };
 in
 {
