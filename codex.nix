@@ -13,6 +13,7 @@ let
     adversarial-code-review = ./ai/skills/adversarial-code-review;
     adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
+    grill-me                = ./ai/skills/grill-me;
   };
 
   # Agents (shared with Claude Code)
