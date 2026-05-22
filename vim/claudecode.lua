@@ -1,1 +1,11 @@
 require('claudecode').setup()
+
+vim.keymap.set('n', '<leader>ac', '<CMD>ClaudeCode<CR>',            { silent = true, desc = 'Toggle Claude terminal' })
+vim.keymap.set('n', '<leader>af', '<CMD>ClaudeCodeFocus<CR>',       { silent = true, desc = 'Focus Claude window' })
+vim.keymap.set('n', '<leader>ar', '<CMD>ClaudeCode --resume<CR>',   { silent = true, desc = 'Resume previous Claude session' })
+vim.keymap.set('n', '<leader>aC', '<CMD>ClaudeCode --continue<CR>', { silent = true, desc = 'Continue current Claude task' })
+vim.keymap.set('n', '<leader>am', '<CMD>ClaudeCodeSelectModel<CR>', { silent = true, desc = 'Select Claude model' })
+vim.keymap.set('n', '<leader>ab', '<CMD>ClaudeCodeAdd %<CR>',       { silent = true, desc = 'Add current buffer to Claude context' })
+vim.keymap.set('v', '<leader>as', '<CMD>ClaudeCodeSend<CR>',        { silent = true, desc = 'Send selection to Claude' })
+vim.keymap.set('n', '<leader>aa', '<CMD>ClaudeCodeDiffAccept<CR>',  { silent = true, desc = 'Accept Claude diff' })
+vim.keymap.set('n', '<leader>ad', '<CMD>ClaudeCodeDiffDeny<CR>',    { silent = true, desc = 'Reject Claude diff' })
