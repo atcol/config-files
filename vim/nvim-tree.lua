@@ -15,5 +15,5 @@ require('nvim-tree').setup({
   },
 })
 
-vim.keymap.set('n', '<F2>', '<CMD>NvimTreeToggle<CR>', { desc = 'Toggle nvim-tree' })
+vim.keymap.set('n', '<C-n>', '<CMD>NvimTreeToggle<CR>', { desc = 'Toggle nvim-tree' })
 vim.keymap.set('n', '<leader>e', '<CMD>NvimTreeFocus<CR>', { desc = 'Focus nvim-tree' })
