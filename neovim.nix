@@ -60,6 +60,13 @@ in
       telescope-nvim  # Fuzzy finder
       FTerm-nvim      # Floating terminal
 
+      # File explorer
+      nvim-tree-lua
+
+      # Claude Code integration
+      snacks-nvim     # required by claudecode-nvim
+      claudecode-nvim
+
       # Package management
       packer-nvim
     ];
@@ -70,6 +77,8 @@ in
       ./vim/cmp.lua
       ./vim/rustaceanvim.lua
       ./vim/cpp.lua
+      ./vim/nvim-tree.lua
+      ./vim/claudecode.lua
       ./vim/packer.lua
     ]);
   };
