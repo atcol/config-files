@@ -1,3 +1,7 @@
+" Set leader to space. Must come before any <leader> mappings load.
+let mapleader = " "
+let maplocalleader = " "
+
 "Use filename rather than full path in airline buffer list
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
