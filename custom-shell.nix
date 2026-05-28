@@ -96,5 +96,7 @@ in
       claudeToGemini "adversarial-prd-review" "Adversarial review of PRDs and product specs" ./ai/skills/adversarial-prd-review/SKILL.md;
     ".gemini/commands/adversarial-rfc-review.toml".source =
       claudeToGemini "adversarial-rfc-review" "Adversarial review of RFCs and technical design documents" ./ai/skills/adversarial-rfc-review/SKILL.md;
+    ".gemini/commands/grill-with-docs.toml".source =
+      claudeToGemini "grill-with-docs" "Grilling session that stress-tests a plan against the project's CONTEXT.md glossary and updates ADRs inline" ./ai/skills/grill-with-docs/SKILL.md;
   };
 }
