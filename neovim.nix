@@ -67,6 +67,9 @@ in
       snacks-nvim     # required by claudecode-nvim
       claudecode-nvim
 
+      # Colorscheme
+      kanagawa-nvim
+
       # Package management
       packer-nvim
     ];
