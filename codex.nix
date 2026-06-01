@@ -14,6 +14,7 @@ let
     adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
     grill-me                = ./ai/skills/grill-me;
+    thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
   };
 
   # Agents (shared with Claude Code)
