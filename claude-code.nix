@@ -16,6 +16,7 @@ let
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
     worktrunk               = ./ai/skills/worktrunk;
     grill-me                = ./ai/skills/grill-me;
+    thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
   };
 in
 {

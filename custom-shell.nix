@@ -96,5 +96,7 @@ in
       claudeToGemini "adversarial-prd-review" "Adversarial review of PRDs and product specs" ./ai/skills/adversarial-prd-review/SKILL.md;
     ".gemini/commands/adversarial-rfc-review.toml".source =
       claudeToGemini "adversarial-rfc-review" "Adversarial review of RFCs and technical design documents" ./ai/skills/adversarial-rfc-review/SKILL.md;
+    ".gemini/commands/thermo-nuclear-code-quality-review.toml".source =
+      claudeToGemini "thermo-nuclear-code-quality-review" "Extremely strict maintainability review for abstraction quality, giant files, and spaghetti-condition growth" ./ai/skills/thermo-nuclear-code-quality-review/SKILL.md;
   };
 }
