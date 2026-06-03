@@ -69,6 +69,8 @@ in
     awscli2
     nodejs
     #zed-editor
+    grpcurl
+    grpcui
 
     # Shell & environment
     niv
