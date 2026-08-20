@@ -1,10 +1,14 @@
 { config, pkgs, lib, ... }:
 let
-  # Shared MCP server definitions (also used by Copilot CLI)
+  # Shared MCP server definitions (also used by Codex CLI)
   mcpServers = import ./mcp-servers.nix;
 
+  # Matt Pocock's skills (grill-me, wayfinder + the skills they delegate to),
+  # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
+  mattPocockSkills = import ./matt-pocock-skills.nix;
+
   # Skills that need to be copied (not symlinked) for Claude to read assets
-  skillsToCopy = {
+  skillsToCopy = mattPocockSkills // {
     generate-smithy    = ./ai/skills/generate-smithy;
     api-to-proto       = ./ai/skills/api-to-proto;
     bootstrap-rust     = ./ai/skills/bootstrap-rust;
@@ -15,7 +19,6 @@ let
     adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
     worktrunk               = ./ai/skills/worktrunk;
-    grill-me                = ./ai/skills/grill-me;
     thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
   };
 in

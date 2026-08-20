@@ -3,8 +3,15 @@ let
   # Shared MCP server definitions (also used by Claude Code)
   mcpServers = import ./mcp-servers.nix;
 
+  # Matt Pocock's skills (grill-me, wayfinder + the skills they delegate to),
+  # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
+  # Each upstream skill dir ships an agents/openai.yaml, which Codex reads for
+  # the skill's display name and its allow_implicit_invocation policy — so
+  # copying the directory wholesale is what makes these behave correctly here.
+  mattPocockSkills = import ./matt-pocock-skills.nix;
+
   # Skills that need to be copied (same as Claude Code)
-  skillsToCopy = {
+  skillsToCopy = mattPocockSkills // {
     generate-smithy    = ./ai/skills/generate-smithy;
     api-to-proto       = ./ai/skills/api-to-proto;
     bootstrap-rust     = ./ai/skills/bootstrap-rust;
@@ -13,7 +20,6 @@ let
     adversarial-code-review = ./ai/skills/adversarial-code-review;
     adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
     adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
-    grill-me                = ./ai/skills/grill-me;
     thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
   };
 

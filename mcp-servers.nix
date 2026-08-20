@@ -1,4 +1,4 @@
-# Shared MCP server definitions for Claude Code and GitHub Copilot CLI
+# Shared MCP server definitions for Claude Code and Codex CLI
 #
 # Both tools use the same MCP protocol, so we define servers once here.
 # Each tool imports this file and maps to its expected format.
