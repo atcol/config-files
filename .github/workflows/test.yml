@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.3.4
+      with:
+        # ai/vendor/matt-pocock-skills is a submodule; without it the skill
+        # paths in matt-pocock-skills.nix don't exist and evaluation fails.
+        submodules: recursive
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
@@ -38,6 +42,22 @@ jobs:
         command -v kubectl
         command -v kraken
         echo "All expected packages verified."
+    - name: Verify Matt Pocock skills are installed
+      run: |
+        set -e
+        for skill in grill-me wayfinder grilling domain-modeling research prototype setup-matt-pocock-skills; do
+          test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)
+          test -f "${HOME}/.codex/skills/$skill/SKILL.md" || (echo "Missing Codex skill: $skill" && exit 1)
+        done
+        # Codex reads agents/openai.yaml for display name + invocation policy
+        test -f "${HOME}/.codex/skills/wayfinder/agents/openai.yaml" || (echo "Codex wayfinder missing openai.yaml" && exit 1)
+        # Gemini has no Skill tool, so /grill-me must carry the grilling body
+        for cmd in grill-me wayfinder domain-modeling research; do
+          test -f "${HOME}/.gemini/commands/$cmd.toml" || (echo "Missing Gemini command: $cmd" && exit 1)
+        done
+        grep -q "design tree" "${HOME}/.gemini/commands/grill-me.toml" \
+          || (echo "Gemini grill-me did not inline the grilling body" && exit 1)
+        echo "Matt Pocock skills verified across Claude, Codex and Gemini."
     - name: Verify shell configuration
       run: |
         export PATH=$HOME/.nix-profile/bin:$PATH
