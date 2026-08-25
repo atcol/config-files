@@ -7,20 +7,12 @@ let
   # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
   mattPocockSkills = import ./matt-pocock-skills.nix;
 
+  # Skills authored in this repo. Shared with Codex CLI so the two can't
+  # drift again. See ./local-skills.nix.
+  localSkills = import ./local-skills.nix;
+
   # Skills that need to be copied (not symlinked) for Claude to read assets
-  skillsToCopy = mattPocockSkills // {
-    generate-smithy    = ./ai/skills/generate-smithy;
-    api-to-proto       = ./ai/skills/api-to-proto;
-    bootstrap-rust     = ./ai/skills/bootstrap-rust;
-    cpp-cmake          = ./ai/skills/cpp-cmake;
-    tdd                = ./ai/skills/tdd;
-    epic-decomposition     = ./ai/skills/epic-decomposition;
-    adversarial-code-review = ./ai/skills/adversarial-code-review;
-    adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
-    adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
-    worktrunk               = ./ai/skills/worktrunk;
-    thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
-  };
+  skillsToCopy = mattPocockSkills // localSkills;
 in
 {
   programs.claude-code.enable = true;

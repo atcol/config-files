@@ -58,6 +58,19 @@ jobs:
         grep -q "design tree" "${HOME}/.gemini/commands/grill-me.toml" \
           || (echo "Gemini grill-me did not inline the grilling body" && exit 1)
         echo "Matt Pocock skills verified across Claude, Codex and Gemini."
+    - name: Verify Claude and Codex install the same skill set
+      run: |
+        set -e
+        # Both tools source ./local-skills.nix and ./matt-pocock-skills.nix, so
+        # their installed sets must match exactly. They used to be two hand-kept
+        # lists, and cpp-cmake and worktrunk went missing from Codex that way.
+        diff <(ls "${HOME}/.claude/skills" | sort) <(ls "${HOME}/.codex/skills" | sort) \
+          || (echo "Claude and Codex skill sets have diverged" && exit 1)
+        for skill in $(ls ai/skills); do
+          test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)
+          test -f "${HOME}/.codex/skills/$skill/SKILL.md" || (echo "Missing Codex skill: $skill" && exit 1)
+        done
+        echo "Claude and Codex install an identical skill set."
     - name: Verify shell configuration
       run: |
         export PATH=$HOME/.nix-profile/bin:$PATH
