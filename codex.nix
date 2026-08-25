@@ -10,18 +10,12 @@ let
   # copying the directory wholesale is what makes these behave correctly here.
   mattPocockSkills = import ./matt-pocock-skills.nix;
 
-  # Skills that need to be copied (same as Claude Code)
-  skillsToCopy = mattPocockSkills // {
-    generate-smithy    = ./ai/skills/generate-smithy;
-    api-to-proto       = ./ai/skills/api-to-proto;
-    bootstrap-rust     = ./ai/skills/bootstrap-rust;
-    tdd                = ./ai/skills/tdd;
-    epic-decomposition     = ./ai/skills/epic-decomposition;
-    adversarial-code-review = ./ai/skills/adversarial-code-review;
-    adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
-    adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
-    thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
-  };
+  # Skills authored in this repo. Shared with Claude Code so the two can't
+  # drift again. See ./local-skills.nix.
+  localSkills = import ./local-skills.nix;
+
+  # Skills that need to be copied (Codex reads a skill's assets off disk)
+  skillsToCopy = mattPocockSkills // localSkills;
 
   # Agents (shared with Claude Code)
   agentsToCopy = {
@@ -152,15 +146,6 @@ in
       fi
     else
       # Create new file with managed section
-      cat > "$CODEX_CONFIG" << 'NIXEOF'
-# Codex CLI Configuration
-# User settings go above the managed section
-
-$MANAGED_START
-$CONFIG_CONTENT
-$MANAGED_END
-NIXEOF
-      # Replace variables (can't use heredoc variables directly)
       echo "# Codex CLI Configuration" > "$CODEX_CONFIG"
       echo "# User settings go above the managed section" >> "$CODEX_CONFIG"
       echo "" >> "$CODEX_CONFIG"

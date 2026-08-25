@@ -34,6 +34,11 @@ Skills are **copied** rather than symlinked into `~/.claude/skills` and
 `~/.codex/skills`, because Claude can't read through symlinks to a skill's
 asset files.
 
+The skills written in this repo live under `ai/skills/`, and the set to install
+is listed once in `local-skills.nix`, which both `claude-code.nix` and
+`codex.nix` import. Adding a skill means adding the directory and one line
+there — CI fails if the two tools end up with different sets.
+
 ### Matt Pocock's skills
 
 [`mattpocock/skills`](https://github.com/mattpocock/skills) (MIT) is pinned as a
