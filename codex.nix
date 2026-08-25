@@ -146,15 +146,6 @@ in
       fi
     else
       # Create new file with managed section
-      cat > "$CODEX_CONFIG" << 'NIXEOF'
-# Codex CLI Configuration
-# User settings go above the managed section
-
-$MANAGED_START
-$CONFIG_CONTENT
-$MANAGED_END
-NIXEOF
-      # Replace variables (can't use heredoc variables directly)
       echo "# Codex CLI Configuration" > "$CODEX_CONFIG"
       echo "# User settings go above the managed section" >> "$CODEX_CONFIG"
       echo "" >> "$CODEX_CONFIG"
