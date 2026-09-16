@@ -1,0 +1,6 @@
+# home-manager build output (`home-manager switch --flake .`)
+/result
+/result-*
+
+# Machine-local Claude Code permission allowlist
+/.claude/settings.local.json
