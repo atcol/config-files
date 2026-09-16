@@ -43,10 +43,18 @@ let
     fi
 
     # Use default if description is empty or whitespace-only
-    desc=$(echo "$desc" | xargs)  # trim whitespace
+    # Trim surrounding whitespace. Not `xargs` — it applies shell-style quote
+    # parsing, so a description containing an apostrophe (e.g. "a project's
+    # domain model") aborts the build with "unmatched single quote".
+    desc=$(printf '%s' "$desc" | ${pkgs.gnused}/bin/sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
     if [ -z "$desc" ]; then
       desc="${defaultDesc}"
     fi
+
+    # Escape for a TOML basic string: backslashes first, then double quotes.
+    # Several descriptions quote their trigger phrases (e.g. "tear apart"),
+    # which would otherwise close the string early and emit invalid TOML.
+    desc=$(printf '%s' "$desc" | ${pkgs.gnused}/bin/sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')
 
     # Replace $ARGUMENTS with {{args}}
     body=$(echo "$body" | ${pkgs.gnused}/bin/sed 's/\$ARGUMENTS/{{args}}/g')
