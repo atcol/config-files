@@ -64,7 +64,12 @@ jobs:
         # Both tools source ./local-skills.nix and ./matt-pocock-skills.nix, so
         # their installed sets must match exactly. They used to be two hand-kept
         # lists, and cpp-cmake and worktrunk went missing from Codex that way.
-        diff <(ls "${HOME}/.claude/skills" | sort) <(ls "${HOME}/.codex/skills" | sort) \
+        # Impeccable uses Codex's current ~/.agents/skills discovery directory.
+        diff <(ls "${HOME}/.claude/skills" | sort) <(
+          for dir in "${HOME}/.codex/skills" "${HOME}/.agents/skills"; do
+            if [ -d "$dir" ]; then ls "$dir"; fi
+          done | sort -u
+        ) \
           || (echo "Claude and Codex skill sets have diverged" && exit 1)
         for skill in $(ls ai/skills); do
           test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)

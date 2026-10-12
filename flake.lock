@@ -38,6 +38,22 @@
         "type": "github"
       }
     },
+    "impeccable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791708874,
+        "narHash": "sha256-c1nOhIBIIMUdwK6P03lgGiH/Mi/ylKTO1I91HpKp4aM=",
+        "owner": "pbakaus",
+        "repo": "impeccable",
+        "rev": "c63b8dd7dd5a5f3c32eaabe1af76d0694f863ed2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pbakaus",
+        "repo": "impeccable",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1775423009,
@@ -58,6 +74,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "impeccable": "impeccable",
         "nixpkgs": "nixpkgs"
       }
     },
