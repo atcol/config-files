@@ -15,6 +15,9 @@ in
 {
   inherit imports;
 
+  # Local opt-in for this checkout; the shared module defaults to disabled.
+  ai.impeccable.enable = true;
+
   programs.home-manager.enable = true;
   home.username = "atc";
   home.homeDirectory = "/home/atc";

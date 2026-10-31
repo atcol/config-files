@@ -6,12 +6,12 @@ let
     inherit (locked) owner repo rev;
     hash = locked.narHash;
   };
-  engineVersion = "0.1.14";
+  engineVersion = "0.1.18";
   platforms = {
-    x86_64-linux = { name = "linux-x64"; hash = "3d31ec1a664ac35c815ea1d7c10abad1155ce364d0f461157eb837a34368efb6"; };
-    aarch64-linux = { name = "linux-arm64"; hash = "396263ee694780db942483fc80933a012ef08bf981f5f26b0da5e16b6208c948"; };
-    x86_64-darwin = { name = "darwin-x64"; hash = "dfa4570309939f49615a441baa9c73f1c2d339bf07494517a6c6eb2eb28aa0f5"; };
-    aarch64-darwin = { name = "darwin-arm64"; hash = "abbd69d540532b91e9599c41d3a6127dfbaabae5e24bafd74ff7e2fb18f4f87c"; };
+    x86_64-linux = { name = "linux-x64"; hash = "736ed785e74ae2344d3036127f614ddde5ab520a527d8bc82a891612ef71f648"; };
+    aarch64-linux = { name = "linux-arm64"; hash = "317cb18d64b0f7715681dd6e574ad64b2adb5a6caf8e7a1b3b57965f805404be"; };
+    x86_64-darwin = { name = "darwin-x64"; hash = "1f1eee78c142f7e40e16f481aeeeb1fad1d8515d8a1ef033d7c6d133e52232b3"; };
+    aarch64-darwin = { name = "darwin-arm64"; hash = "543ee2f72036ad185dc9991ac3ba86b74d91f988f3d497776a088b8b65c8a9e1"; };
   };
   platform = platforms.${stdenvNoCC.hostPlatform.system};
   engine = fetchurl {
@@ -21,7 +21,7 @@ let
 in
 stdenvNoCC.mkDerivation {
   pname = "impeccable";
-  version = "4.5.2";
+  version = "4.8.0";
   src = source;
   nativeBuildInputs = [ python3 nodejs ];
   dontBuild = true;

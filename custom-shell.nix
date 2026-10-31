@@ -71,8 +71,10 @@ in
 {
   programs.git = {
     enable = true;
-    userName  = "Alex";
-    userEmail = "codeetc@pm.me";
+    settings.user = {
+      name  = "Alex";
+      email = "codeetc@pm.me";
+    };
   };
 
   programs.bash = {
