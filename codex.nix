@@ -10,7 +10,7 @@ let
   # copying the directory wholesale is what makes these behave correctly here.
   mattPocockSkills = import ./matt-pocock-skills.nix;
 
-  # Skills authored in this repo. Shared with Claude Code so the two can't
+  # Skills maintained in this repo. Shared with Claude Code so the two can't
   # drift again. See ./local-skills.nix.
   localSkills = import ./local-skills.nix;
 

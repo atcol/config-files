@@ -7,7 +7,7 @@ let
   # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
   mattPocockSkills = import ./matt-pocock-skills.nix;
 
-  # Skills authored in this repo. Shared with Codex CLI so the two can't
+  # Skills maintained in this repo. Shared with Codex CLI so the two can't
   # drift again. See ./local-skills.nix.
   localSkills = import ./local-skills.nix;
 

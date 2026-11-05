@@ -1,4 +1,4 @@
-# Skills authored in this repo, under ./ai/skills.
+# Skills maintained in this repo, under ./ai/skills.
 #
 # Claude Code and Codex CLI install the same set, so it lives here rather than
 # being written out twice — the two copies had already drifted (`cpp-cmake` and
@@ -23,6 +23,11 @@
   adversarial-prd-review  = ./ai/skills/adversarial-prd-review;
   adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
   worktrunk               = ./ai/skills/worktrunk;
+
+  # Cloudflare's MIT-licensed skill, copied with all companion files and LICENSE.
+  # Upstream: https://github.com/cloudflare/security-audit-skill
+  # Revision: c1c8a8c1471069fb0e188eeaff69b8e8db6564a8 (skills/security-audit)
+  security-audit          = ./ai/skills/security-audit;
 
   thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
 }
