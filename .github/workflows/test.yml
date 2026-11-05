@@ -9,8 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.4
       with:
-        # ai/vendor/matt-pocock-skills is a submodule; without it the skill
-        # paths in matt-pocock-skills.nix don't exist and evaluation fails.
+        # Vendored skills under ai/vendor are submodules; without them
+        # the skill paths don't exist and evaluation fails.
         submodules: recursive
     - uses: cachix/install-nix-action@v13
       with:
@@ -71,7 +71,7 @@ jobs:
           done | sort -u
         ) \
           || (echo "Claude and Codex skill sets have diverged" && exit 1)
-        for skill in $(ls ai/skills); do
+        for skill in $(ls ai/skills) security-audit; do
           test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)
           test -f "${HOME}/.codex/skills/$skill/SKILL.md" || (echo "Missing Codex skill: $skill" && exit 1)
         done

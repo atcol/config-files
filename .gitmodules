@@ -1,3 +1,6 @@
 [submodule "ai/vendor/matt-pocock-skills"]
 	path = ai/vendor/matt-pocock-skills
 	url = https://github.com/mattpocock/skills.git
+[submodule "ai/vendor/security-audit-skill"]
+	path = ai/vendor/security-audit-skill
+	url = https://github.com/cloudflare/security-audit-skill.git

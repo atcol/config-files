@@ -1,4 +1,4 @@
-# Skills maintained in this repo, under ./ai/skills.
+# Shared skills maintained under ./ai/skills or vendored under ./ai/vendor.
 #
 # Claude Code and Codex CLI install the same set, so it lives here rather than
 # being written out twice — the two copies had already drifted (`cpp-cmake` and
@@ -24,10 +24,13 @@
   adversarial-rfc-review  = ./ai/skills/adversarial-rfc-review;
   worktrunk               = ./ai/skills/worktrunk;
 
-  # Cloudflare's MIT-licensed skill, copied with all companion files and LICENSE.
+  # Cloudflare's MIT-licensed skill, pinned as a git submodule.
   # Upstream: https://github.com/cloudflare/security-audit-skill
-  # Revision: c1c8a8c1471069fb0e188eeaff69b8e8db6564a8 (skills/security-audit)
-  security-audit          = ./ai/skills/security-audit;
+  # Initialise on a fresh checkout: git submodule update --init --recursive
+  # Update: git submodule update --remote ai/vendor/security-audit-skill
+  # Then commit ai/vendor/security-audit-skill to record the new pin.
+  # The upstream LICENSE is retained at the submodule root.
+  security-audit          = ./ai/vendor/security-audit-skill/skills/security-audit;
 
   thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
 }
