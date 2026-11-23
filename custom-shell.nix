@@ -16,6 +16,9 @@ let
   # Matt Pocock's skills, vendored as a pinned git submodule.
   # See ./matt-pocock-skills.nix.
   mattPocockSkills = import ./matt-pocock-skills.nix;
+  geminiNativeSkills = mattPocockSkills // {
+    inherit (import ./local-skills.nix) socratic-tutor;
+  };
 
   # Convert Claude MD command to Gemini TOML format
   # Handles both files with and without YAML frontmatter
@@ -70,13 +73,13 @@ TOML
 in
 {
   # Keep supporting references and delegated skills available to Gemini.
-  home.activation.copyGeminiMattPocockSkills = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.copyGeminiNativeSkills = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p $HOME/.gemini/skills
     ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
       rm -rf $HOME/.gemini/skills/${name}
       cp -rL ${path} $HOME/.gemini/skills/${name}
       chmod -R u+w $HOME/.gemini/skills/${name}
-    '') mattPocockSkills)}
+    '') geminiNativeSkills)}
   '';
 
   programs.git = {
@@ -126,9 +129,9 @@ in
   } // lib.mapAttrs' (name: path: lib.nameValuePair
     ".gemini/commands/${name}.toml" {
       source = pkgs.writeText "${name}.toml" ''
-        description = "Run Matt Pocock's ${name} skill"
+        description = "Run the ${name} skill"
         prompt = "Read and follow ~/.gemini/skills/${name}/SKILL.md. Resolve relative references from that skill directory. When a skill asks to call the Skill tool, read and follow the named skill's SKILL.md under ~/.gemini/skills/ instead. User request: {{args}}"
       '';
     }
-  ) mattPocockSkills;
+  ) geminiNativeSkills;
 }

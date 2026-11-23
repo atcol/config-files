@@ -9,8 +9,7 @@
 # can't read through a symlink to a skill's asset files.
 #
 # Matt Pocock's vendored skills are separate; see ./matt-pocock-skills.nix.
-# Gemini CLI takes its own subset in ./custom-shell.nix, because each skill has
-# to be flattened into a self-contained TOML command there.
+# Gemini CLI selects native skills and converted commands in ./custom-shell.nix.
 {
   generate-smithy         = ./ai/skills/generate-smithy;
   api-to-proto            = ./ai/skills/api-to-proto;
@@ -31,6 +30,11 @@
   # Then commit ai/vendor/security-audit-skill to record the new pin.
   # The upstream LICENSE is retained at the submodule root.
   security-audit          = ./ai/vendor/security-audit-skill/skills/security-audit;
+
+  # Jane Street's MIT-licensed skills, pinned as a git submodule.
+  # Update: git submodule update --remote ai/vendor/jane-street-agent-skills
+  # The upstream LICENSE.md is retained at the submodule root.
+  socratic-tutor = ./ai/vendor/jane-street-agent-skills/socratic-tutor;
 
   thermo-nuclear-code-quality-review = ./ai/skills/thermo-nuclear-code-quality-review;
 }

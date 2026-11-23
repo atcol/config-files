@@ -73,11 +73,15 @@ jobs:
           done | sort -u
         ) \
           || (echo "Claude and Codex skill sets have diverged" && exit 1)
-        for skill in $(ls ai/skills) security-audit; do
+        for skill in $(ls ai/skills) security-audit socratic-tutor; do
           test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)
           test -f "${HOME}/.codex/skills/$skill/SKILL.md" || (echo "Missing Codex skill: $skill" && exit 1)
         done
         echo "Claude and Codex install an identical skill set."
+    - name: Verify Gemini Socratic tutor installation
+      run: |
+        test -f "${HOME}/.gemini/skills/socratic-tutor/SKILL.md"
+        test -f "${HOME}/.gemini/commands/socratic-tutor.toml"
     - name: Verify shell configuration
       run: |
         export PATH=$HOME/.nix-profile/bin:$PATH

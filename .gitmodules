@@ -4,3 +4,6 @@
 [submodule "ai/vendor/security-audit-skill"]
 	path = ai/vendor/security-audit-skill
 	url = https://github.com/cloudflare/security-audit-skill.git
+[submodule "ai/vendor/jane-street-agent-skills"]
+	path = ai/vendor/jane-street-agent-skills
+	url = https://github.com/janestreet/agent_skills.git

@@ -166,3 +166,19 @@ git commit -am "chore: bump matt-pocock-skills"
 
 Upstream reorganises skills between releases, so check that the paths in
 `matt-pocock-skills.nix` still resolve after a bump — CI does verify this.
+
+### Jane Street's Socratic tutor
+
+[`janestreet/agent_skills`](https://github.com/janestreet/agent_skills) (MIT) is
+pinned at `ai/vendor/jane-street-agent-skills`. `local-skills.nix` registers
+`socratic-tutor` for Claude and Codex; Gemini installs the same complete skill
+and exposes `/socratic-tutor` as a command. Ask it to “teach me” or “quiz me” on
+a topic to start a structured tutoring session.
+
+Update the pin with:
+
+```bash
+git submodule update --remote ai/vendor/jane-street-agent-skills
+```
+
+Then commit the submodule pointer and apply your Home Manager configuration.
