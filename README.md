@@ -23,7 +23,7 @@ Four AI tools are configured here, sharing one set of source files under `ai/`:
 | --- | --- | --- |
 | **Claude Code** | `claude-code.nix` | skills, agents, commands, MCP servers, permissions |
 | **Codex CLI** | `codex.nix` | skills, agents, commands, MCP servers |
-| **Gemini CLI** | `custom-shell.nix` | commands (skills converted to Gemini's TOML format) |
+| **Gemini CLI** | `custom-shell.nix` | native Matt Pocock skills and TOML commands |
 | **Neovim** | `neovim.nix` | `claudecode-nvim`, driving Claude Code from the editor |
 
 MCP servers (GitHub, Linear, Slack, Supabase, Kraken) are defined once in
@@ -104,22 +104,26 @@ submodule at `ai/vendor/matt-pocock-skills`, and the subset we install is listed
 in `matt-pocock-skills.nix`. Vendoring the upstream repo rather than copying the
 prompts in means his fixes arrive with a pin bump instead of a manual re-copy.
 
-Two entry points, both user-invoked only (upstream marks them
+Four entry points, all user-invoked only (upstream marks them
 `disable-model-invocation`, so they run when you ask for them and never
 because the model felt like it):
 
 - **`/grill-me`** — a relentless interview that walks the design tree of a plan
   a round of questions at a time, each with a recommended answer, until nothing
   is left silently assumed. Facts it can look up itself, it looks up.
+- **`/grill-with-docs`** — the interview plus domain modeling, recording glossary
+  entries and ADRs as decisions emerge.
+- **`/retro`** — review a coding session and suggest improvements to the agent
+  environment, using the `writing-for-agents` style guide.
 - **`/wayfinder`** — for work too big to fit in one agent session. Charts the
   effort as a map issue on your tracker (labelled `wayfinder:map`) with child
   *decision* tickets, then resolves them one per session until the route to the
   destination is clear. It plans; it doesn't build.
 
-The rest of the installed set exists because those two delegate to it at
+The rest of the installed set exists because the entry points delegate to it at
 runtime — `grilling` (the interview primitive behind `grill-me`),
-`domain-modeling`, `research`, and `prototype`. Installing an entry point
-without its delegates leaves it half-broken.
+`domain-modeling`, `research`, `prototype`, and `writing-for-agents`. Installing
+an entry point without its delegates leaves it half-broken.
 
 `setup-matt-pocock-skills` is also installed. It's not a dependency, but
 `/wayfinder` reads a per-repo `docs/agents/issue-tracker.md` that only this
@@ -137,6 +141,8 @@ Run once per repo you want to use `/wayfinder` in, to tell it where issues live
 Then, in Claude Code or Codex:
 
 ```
+/grill-with-docs     # stress-test a plan and capture glossary entries and ADRs
+/retro               # review a coding session for environment improvements
 /grill-me            # stress-test a plan in one session
 /wayfinder           # chart a multi-session effort as a map
 /wayfinder <map-url> # work the next ticket on an existing map
@@ -145,16 +151,11 @@ Then, in Claude Code or Codex:
 Never resolve more than one `/wayfinder` ticket per session — the map is the
 memory, the session isn't.
 
-These **Gemini CLI** commands use the existing TOML conversion rather than
-native skills. Each converted command is self-contained, which changes two things:
-
-- `/grill-me` is generated from the **`grilling`** body, not from upstream's
-  `grill-me` — the latter is one line (`Call the Skill tool with "grilling"`)
-  and would flatten to a no-op.
-- `/wayfinder` still names the skills it hands off to, so `/domain-modeling` and
-  `/research` are installed as commands to invoke by hand at that point.
-  `prototype` is not: its `SKILL.md` is only a router to `LOGIC.md` and `UI.md`,
-  which a single flattened file can't carry. Use Claude Code or Codex for that.
+**Gemini CLI** installs the same complete Matt Pocock skill directories under
+`~/.gemini/skills/`, including supporting references and runtime dependencies.
+Matching TOML slash commands load each installed `SKILL.md` and tell Gemini how
+to follow named skill dependencies. This includes `/grill-with-docs`, `/retro`,
+`/prototype`, and `/setup-matt-pocock-skills` as well as the existing commands.
 
 #### Updating
 

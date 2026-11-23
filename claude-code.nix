@@ -3,7 +3,7 @@ let
   # Shared MCP server definitions (also used by Codex CLI)
   mcpServers = import ./mcp-servers.nix;
 
-  # Matt Pocock's skills (grill-me, wayfinder + the skills they delegate to),
+  # Matt Pocock's entry points and their runtime dependencies,
   # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
   mattPocockSkills = import ./matt-pocock-skills.nix;
 

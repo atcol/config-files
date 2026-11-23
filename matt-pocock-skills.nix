@@ -12,26 +12,27 @@
 # switch` — the paths below are ordinary filesystem paths, so an uninitialised
 # submodule fails evaluation with "path does not exist".
 #
-# `grill-me` and `wayfinder` are the two user-invoked entry points; both are
-# marked `disable-model-invocation` upstream, so they only ever run when you
-# ask for them by name. The rest are the skills those two delegate to at
-# runtime, and have to be installed for the entry points to work:
+# User-invoked entry points and their runtime dependencies are shared by
+# Claude Code, Codex, and Gemini CLI:
 #
-#   grill-me  -> grilling
-#   wayfinder -> grilling, domain-modeling, research, prototype
+#   grill-me        -> grilling
+#   grill-with-docs -> grilling, domain-modeling
+#   retro           -> writing-for-agents
+#   wayfinder       -> grilling, domain-modeling, research, prototype
 #
-# setup-matt-pocock-skills is not a dependency of either, but wayfinder's map
-# reads a per-repo `docs/agents/issue-tracker.md` that only this skill knows
-# how to scaffold, so it ships alongside them.
+# setup-matt-pocock-skills scaffolds the per-repo tracker and domain docs.
 let
   upstream = ./ai/vendor/matt-pocock-skills/skills;
 in
 {
   # Entry points
   grill-me  = "${upstream}/productivity/grill-me";
+  grill-with-docs = "${upstream}/engineering/grill-with-docs";
+  retro = "${upstream}/engineering/retro";
   wayfinder = "${upstream}/engineering/wayfinder";
 
   # Delegated to at runtime by the entry points above
+  writing-for-agents = "${upstream}/productivity/writing-for-agents";
   grilling        = "${upstream}/productivity/grilling";
   domain-modeling = "${upstream}/engineering/domain-modeling";
   research        = "${upstream}/engineering/research";

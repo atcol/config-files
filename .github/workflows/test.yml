@@ -45,18 +45,20 @@ jobs:
     - name: Verify Matt Pocock skills are installed
       run: |
         set -e
-        for skill in grill-me wayfinder grilling domain-modeling research prototype setup-matt-pocock-skills; do
+        for skill in grill-me grill-with-docs retro wayfinder grilling domain-modeling research prototype writing-for-agents setup-matt-pocock-skills; do
           test -f "${HOME}/.claude/skills/$skill/SKILL.md" || (echo "Missing Claude skill: $skill" && exit 1)
           test -f "${HOME}/.codex/skills/$skill/SKILL.md" || (echo "Missing Codex skill: $skill" && exit 1)
+          test -f "${HOME}/.gemini/skills/$skill/SKILL.md" || (echo "Missing Gemini skill: $skill" && exit 1)
+          test -f "${HOME}/.gemini/commands/$skill.toml" || (echo "Missing Gemini command: $skill" && exit 1)
         done
         # Codex reads agents/openai.yaml for display name + invocation policy
         test -f "${HOME}/.codex/skills/wayfinder/agents/openai.yaml" || (echo "Codex wayfinder missing openai.yaml" && exit 1)
-        # Gemini has no Skill tool, so /grill-me must carry the grilling body
-        for cmd in grill-me wayfinder domain-modeling research; do
-          test -f "${HOME}/.gemini/commands/$cmd.toml" || (echo "Missing Gemini command: $cmd" && exit 1)
+        # Supporting docs must survive installation for all three harnesses.
+        for harness in claude codex gemini; do
+          for reference in domain-modeling/GLOSSARY-FORMAT.md domain-modeling/ADR-FORMAT.md writing-for-agents/SKILL-MECHANICS.md prototype/LOGIC.md prototype/UI.md; do
+            test -f "${HOME}/.$harness/skills/$reference" || (echo "Missing $harness reference: $reference" && exit 1)
+          done
         done
-        grep -q "design tree" "${HOME}/.gemini/commands/grill-me.toml" \
-          || (echo "Gemini grill-me did not inline the grilling body" && exit 1)
         echo "Matt Pocock skills verified across Claude, Codex and Gemini."
     - name: Verify Claude and Codex install the same skill set
       run: |

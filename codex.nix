@@ -3,7 +3,7 @@ let
   # Shared MCP server definitions (also used by Claude Code)
   mcpServers = import ./mcp-servers.nix;
 
-  # Matt Pocock's skills (grill-me, wayfinder + the skills they delegate to),
+  # Matt Pocock's entry points and their runtime dependencies,
   # vendored as a pinned git submodule. See ./matt-pocock-skills.nix.
   # Each upstream skill dir ships an agents/openai.yaml, which Codex reads for
   # the skill's display name and its allow_implicit_invocation policy — so
